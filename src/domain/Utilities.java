@@ -1,3 +1,8 @@
+/**
+ * Utilities - This class provides common utilities to be used by all
+ *  classes in the domain.
+ */
+
 package domain;
 
 public class Utilities
