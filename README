@@ -1,0 +1,6 @@
+This is a class project for SEIS635.  The project is a chess game, implemented in Java.  The game will be played on a single computer, with players taking turns on the same user interface (no computer controlled players).  The game will support the basic allowed moves for all pieces, and will not permit the players to play out of sequence, make illegal moves, or place themselves in check.  The game will also correctly declare checkmate.  The user interface will be in swing, with squares that can be selected representing the board, and simple icons for the pieces.
+
+As time permits, we will also consider adding:
+- en passant and castling moves
+- declaration of a draw if a player is not in check and has no legal moves
+- ability to save games and load a previous game
