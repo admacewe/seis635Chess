@@ -3,7 +3,7 @@
  *  chess piece.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public class Bishop extends Piece
 {

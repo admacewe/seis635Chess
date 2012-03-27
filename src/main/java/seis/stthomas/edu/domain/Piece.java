@@ -2,7 +2,7 @@
  * Piece - Abstract base class from which all chess pieces are derived.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public abstract class Piece
 {

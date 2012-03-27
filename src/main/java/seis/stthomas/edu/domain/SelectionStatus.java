@@ -4,7 +4,7 @@
  *  returned which allows the UI to appropriately update the display.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public enum SelectionStatus
 {

@@ -4,9 +4,10 @@
  *  on user actions and the current game state.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
-import ui.ChessWindow;
+import seis.stthomas.edu.ui.ChessWindow;
+
 
 public class ChessController
 {

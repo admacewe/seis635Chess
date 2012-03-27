@@ -1,8 +1,11 @@
-package ui;
+package seis.stthomas.edu.ui;
 
-import domain.ChessController;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
+import seis.stthomas.edu.domain.ChessController;
+
 
 public class ChessWindow
 {

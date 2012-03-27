@@ -5,7 +5,7 @@
  *  does not place the current player in check.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public class Board
 {

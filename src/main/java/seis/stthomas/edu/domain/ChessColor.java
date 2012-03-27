@@ -3,7 +3,7 @@
  *  the active player.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public enum ChessColor
 {

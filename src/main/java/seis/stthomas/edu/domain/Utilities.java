@@ -3,7 +3,7 @@
  *  classes in the domain.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public class Utilities
 {

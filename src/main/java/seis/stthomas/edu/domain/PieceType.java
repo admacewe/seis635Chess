@@ -2,7 +2,7 @@
  * PieceType - enumeration of all the types of chess pieces.
  */
 
-package domain;
+package seis.stthomas.edu.domain;
 
 public enum PieceType
 {

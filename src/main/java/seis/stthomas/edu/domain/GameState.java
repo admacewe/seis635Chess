@@ -1,4 +1,4 @@
-package domain;
+package seis.stthomas.edu.domain;
 
 public enum GameState
 {

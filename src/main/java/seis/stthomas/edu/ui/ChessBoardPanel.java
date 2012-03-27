@@ -2,16 +2,26 @@
  * ChessBoardPanel - Controls display of chess board, and notifies game
  *  controller of user control events.
  */
-package ui;
+package seis.stthomas.edu.ui;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import domain.*;
+
+import seis.stthomas.edu.domain.ChessColor;
+import seis.stthomas.edu.domain.ChessController;
+import seis.stthomas.edu.domain.Piece;
+import seis.stthomas.edu.domain.PieceType;
+import seis.stthomas.edu.domain.SelectionStatus;
 
 public class ChessBoardPanel extends JPanel
 {
-    private ChessController controller;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private ChessController controller;
     
     // panels used in the display
     private JPanel squarePanel;     // contains the squares making up the tic-tac-toe board
