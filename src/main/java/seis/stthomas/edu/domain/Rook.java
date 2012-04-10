@@ -9,7 +9,7 @@ public class Rook extends Piece
 {
     public Rook(ChessColor newColor, Board boardRef)
     {
-        super(newColor, boardRef);
+        super(newColor, boardRef, 5);
         type = PieceType.rook;
     }
     

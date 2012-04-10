@@ -9,7 +9,7 @@ public class Pawn extends Piece
 {
     public Pawn(ChessColor newColor, Board boardRef)
     {
-        super(newColor, boardRef);
+        super(newColor, boardRef, 1);
         type = PieceType.pawn;
     }
     

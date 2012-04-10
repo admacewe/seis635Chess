@@ -8,11 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import seis.stthomas.edu.domain.ChessColor;
-import seis.stthomas.edu.domain.ChessController;
-import seis.stthomas.edu.domain.Piece;
-import seis.stthomas.edu.domain.PieceType;
-import seis.stthomas.edu.domain.SelectionStatus;
+import seis.stthomas.edu.domain.*;
 
 public class ChessBoardPanel extends JPanel
 {
@@ -33,11 +29,15 @@ public class ChessBoardPanel extends JPanel
     private JButton[][] squareButtons;
     
     // components contained in startPanel
-    private JButton startButton;
+    private JButton startVsHumanButton;
+    private JButton startVsCPUButton;
     
     // components contained in messagePanel
     private JLabel activePlayerMsg;
     private JLabel statusMsg;
+    
+    // most recent CPU move
+    private PieceMove cpuMove;
     
     /**
      * Constructor - initialize reference to game controller, instantiate
@@ -68,10 +68,13 @@ public class ChessBoardPanel extends JPanel
         squarePanel.setPreferredSize(new Dimension(530, 530));
 
         // Initialize start panel
-        startButton = new JButton("Start Game");
-        startButton.addActionListener(new StartButtonListener());
+        startVsHumanButton = new JButton("Start Vs Human");
+        startVsHumanButton.addActionListener(new StartButtonListener());
+        startVsCPUButton = new JButton("Start Vs CPU");
+        startVsCPUButton.addActionListener(new StartButtonListener());
         startPanel = new JPanel();
-        startPanel.add(startButton);
+        startPanel.add(startVsHumanButton);
+        startPanel.add(startVsCPUButton);
         startPanel.setBackground(Color.orange);
         startPanel.setPreferredSize(new Dimension(600, 40));
         
@@ -100,14 +103,14 @@ public class ChessBoardPanel extends JPanel
         // Initially use the destValidNoCheck state, because that normally
         // causes the UI display to update for piece selection, which is
         // what we want at the start of a game.
-        updateButtons(SelectionStatus.destValidNoCheck);
+        updateButtons(SelectionStatus.destValidNoCheck, false);
         updateMessages(SelectionStatus.destValidNoCheck);
     }
     
     /**
      * updateButtons - Updates the display of pieces on the board.
      */
-    private void updateButtons(SelectionStatus status)
+    private void updateButtons(SelectionStatus status, boolean cpuMoved)
     {
         Piece piece;
         ChessColor color = ChessColor.white;
@@ -116,7 +119,7 @@ public class ChessBoardPanel extends JPanel
         for(int row = 0; row < 8; row++)
         {
             for(int col = 0; col < 8; col++)
-            {                
+            {   
                 // set the color of the square, to highlight the square
                 // if a piece has been selected, and this square is in
                 // range.
@@ -136,6 +139,13 @@ public class ChessBoardPanel extends JPanel
                     {
                         squareButtons[row][col].setBackground(Color.black);
                     }
+                }
+                
+                // if the computer player moved, highlight the starting and ending squares
+                if(cpuMoved)
+                {
+                    squareButtons[cpuMove.startRow][cpuMove.startCol].setBackground(Color.yellow);
+                    squareButtons[cpuMove.destRow][cpuMove.destCol].setBackground(Color.yellow);
                 }
                 
                 // set the piece icon in the square
@@ -232,14 +242,27 @@ public class ChessBoardPanel extends JPanel
     {
         public void actionPerformed(ActionEvent event)
         {
-            if(event.getSource() == startButton)
+            if(event.getSource() == startVsHumanButton)
             {
-                controller.newGame();
+                // start game against human opponent
+                controller.newGame(false, 0);
 
                 // Initially use the destValidNoCheck state, because that normally
                 // causes the UI display to update for piece selection, which is
                 // what we want at the start of a game.
-                updateButtons(SelectionStatus.destValidNoCheck);
+                updateButtons(SelectionStatus.destValidNoCheck, false);
+                updateMessages(SelectionStatus.destValidNoCheck);
+            }
+            
+            if(event.getSource() == startVsCPUButton)
+            {
+                // start game against computer opponent
+                controller.newGame(true, 4);
+
+                // Initially use the destValidNoCheck state, because that normally
+                // causes the UI display to update for piece selection, which is
+                // what we want at the start of a game.
+                updateButtons(SelectionStatus.destValidNoCheck, false);
                 updateMessages(SelectionStatus.destValidNoCheck);
             }
         }
@@ -258,10 +281,20 @@ public class ChessBoardPanel extends JPanel
                     if(event.getSource() == squareButtons[row][col])
                     {
                         status = controller.squareSelected(row, col);
-                        
+
                         // Always update the display after each button press
-                        updateButtons(status);
+                        updateButtons(status, false);
                         updateMessages(status);
+                        
+                        if(controller.getState() == GameState.cpuTurn)
+                        {
+                            status = controller.determineCPUMove();
+                            cpuMove = controller.getCPUMove();
+                            
+                            // Always update the display after each button press
+                            updateButtons(status, true);
+                            updateMessages(status);
+                        }                        
                         
                         break;
                     }                    

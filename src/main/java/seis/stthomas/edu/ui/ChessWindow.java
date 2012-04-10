@@ -16,7 +16,7 @@ public class ChessWindow
     {
         boardPanel = new ChessBoardPanel(chessControl);
 
-        JFrame frame = new JFrame("Chess UI Demo");
+        JFrame frame = new JFrame("Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(boardPanel, BorderLayout.CENTER);
         frame.pack();
