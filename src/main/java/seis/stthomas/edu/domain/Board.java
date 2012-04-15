@@ -70,7 +70,8 @@ public class Board
      *  place the current player in check, the move is undone, and false is
      *  returned.
      */
-    public boolean tryMove(int curRow, int curCol, int destRow, int destCol, boolean updateState)
+    public boolean tryMove(int curRow, int curCol, int destRow, int destCol, 
+            boolean updateState, boolean updateHasMoved)
     {        
         boolean valid = true;
         
@@ -82,6 +83,13 @@ public class Board
         // Try moving the piece
         pieces[destRow][destCol] = pieces[curRow][curCol];
         pieces[curRow][curCol] = null;
+        
+        // If a pawn has moved into row 0 or row 7, exchange it for a queen
+        if((pieces[destRow][destCol].getType() == PieceType.pawn) &&
+           ((destRow == 0) || (destRow == 7)))
+        {
+            pieces[destRow][destCol] = new Queen(pieces[destRow][destCol].getColor(), this);
+        }
         
         // Check if the move places the current player in check.  The current
         // player can be found from the source piece
@@ -99,7 +107,7 @@ public class Board
         }
         
         // If the move is valid and the state is to be updated, set the hasMoved flag
-        if(valid && updateState)
+        if(valid && updateState && updateHasMoved)
         {
             pieces[destRow][destCol].setHasMoved(true);
         }
@@ -257,6 +265,11 @@ public class Board
         return piece;
     }
     
+    public void setPiece(int row, int col, Piece pieceSetting)
+    {
+        pieces[row][col] = pieceSetting;
+    }
+    
     private boolean pieceHasValidMove(Piece piece, int pieceRow, int pieceCol)
     {
         boolean[][] tryDestRange = new boolean[8][8];
@@ -282,7 +295,7 @@ public class Board
             {
                 if(tryDestRange[row][col])
                 {
-                    validMove = tryMove(pieceRow, pieceCol, row, col, false);
+                    validMove = tryMove(pieceRow, pieceCol, row, col, false, false);
                 }
             }
         }

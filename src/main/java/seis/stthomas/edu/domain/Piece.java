@@ -10,11 +10,13 @@ public abstract class Piece
     ChessColor color;
     Board board;
     boolean hasMoved;
+    int value;
     
-    public Piece(ChessColor newColor, Board boardRef)
+    public Piece(ChessColor newColor, Board boardRef, int valueSetting)
     {
         color = newColor;
         board = boardRef;
+        value = valueSetting;
         hasMoved = false;
     }
     
@@ -153,5 +155,10 @@ public abstract class Piece
     public PieceType getType()
     {
         return type;
+    }
+    
+    public int getValue()
+    {
+        return value;
     }
 }

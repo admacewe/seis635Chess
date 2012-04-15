@@ -9,7 +9,7 @@ public class Bishop extends Piece
 {
     public Bishop(ChessColor newColor, Board boardRef)
     {
-        super(newColor, boardRef);
+        super(newColor, boardRef, 3);
         type = PieceType.bishop;
     }
     

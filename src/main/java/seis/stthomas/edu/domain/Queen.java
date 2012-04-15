@@ -9,7 +9,7 @@ public class Queen extends Piece
 {
     public Queen(ChessColor newColor, Board boardRef)
     {
-        super(newColor, boardRef);
+        super(newColor, boardRef, 9);
         type = PieceType.queen;
     }
     

@@ -9,7 +9,7 @@ public class King extends Piece
 {
     public King(ChessColor newColor, Board boardRef)
     {
-        super(newColor, boardRef);
+        super(newColor, boardRef, 1000);
         type = PieceType.king;
     }
     

@@ -8,7 +8,6 @@ package seis.stthomas.edu.domain;
 
 import seis.stthomas.edu.ui.ChessWindow;
 
-
 public class ChessController
 {
     Board board;           // reference to the chess board
@@ -17,15 +16,26 @@ public class ChessController
     int pieceRow;          // row number of the currently selected piece
     int pieceCol;          // column number of the currently selected piece
     ChessWindow ui;        // user interface
+    CPUPlayer cpuPlayer;   // reference to a CPU player in case a game is played vs CPU
+    boolean isOpponentCPU; // indicates if opponent is a CPU player or not
+    PieceMove cpuMove;     // most recent CPU move
+    
+    public ChessController()
+    {
+        cpuPlayer = new CPUPlayer();
+        cpuPlayer.setDifficulty(4);
+    }
     
     /**
      * Initialize for a new game.  Create the board and set inital states.
      */
-    public void newGame()
+    public void newGame(boolean playVsCPU, int difficulty)
     {
         board = new Board();
         state = GameState.choosePiece;
         activePlayer = ChessColor.white;
+        isOpponentCPU = playVsCPU;
+        cpuPlayer.setDifficulty(difficulty);
     }
     
     /**
@@ -111,7 +121,8 @@ public class ChessController
         ChessColor opponent;
         
         // Initially assume state is switching to waiting for a piece
-        // selection.  This may be overwritten with checkmate below.
+        // selection.  This may be overwritten in the case of checkmate
+        // or a CPU player turn.
         state = GameState.choosePiece;
         
         // If the square is not in range, update the return status
@@ -122,7 +133,7 @@ public class ChessController
         
         // If the square is in range, and it does not place the current
         // player in check, the move is valid.
-        else if(board.tryMove(pieceRow, pieceCol, destRow, destCol, true) == false)
+        else if(board.tryMove(pieceRow, pieceCol, destRow, destCol, true, true) == false)
         {
             status = SelectionStatus.destSelfInCheck;
         }   
@@ -148,6 +159,12 @@ public class ChessController
                 
                 // If the game is not over, update the player turn
                 activePlayer = opponent;
+                
+                // If it is the CPU player's turn
+                if((activePlayer == ChessColor.black) && isOpponentCPU)
+                {
+                    state = GameState.cpuTurn;
+                }
             }
             
             // if the opponent has no valid move, declare checkmate or draw
@@ -167,6 +184,52 @@ public class ChessController
         }
         
         return status;
+    }
+    
+    public SelectionStatus determineCPUMove()
+    {
+        SelectionStatus status;
+        
+        cpuMove = cpuPlayer.selectMove(board);
+                
+        // If opponent has a valid move, update status to check or no-check
+        if(board.playerHasValidMove(ChessColor.white))
+        {
+            if(board.playerInCheck(ChessColor.white))
+            {
+                status = SelectionStatus.destValidCheck;                    
+            }
+            else
+            {
+                status = SelectionStatus.destValidNoCheck;                    
+            }
+            
+            // If the game is not over, update the player turn
+            activePlayer = ChessColor.white;
+            state = GameState.choosePiece;
+        }
+        
+        // if the opponent has no valid move, declare checkmate or draw
+        else
+        {
+            state = GameState.idle;
+            
+            if(board.playerInCheck(ChessColor.white))
+            {
+                status = SelectionStatus.destValidCheckMate;
+            }
+            else
+            {
+                status = SelectionStatus.destValidDraw;
+            }
+        }                        
+        
+        return status;
+    }
+    
+    public PieceMove getCPUMove()
+    {
+        return cpuMove;
     }
     
     /**
@@ -192,6 +255,11 @@ public class ChessController
         return activePlayer;
     }
     
+    public GameState getState()
+    {
+        return state;
+    }
+    
     /**
      * createUI - Instantiate a ChessWindow object to create and initialize
      *  the user interface.
@@ -211,7 +279,7 @@ public class ChessController
 
         // Initialize the game and create the UI.  This must be done
         // in this order or the UI will not properly display the board.
-        controller.newGame();
+        controller.newGame(false, 0);
         controller.createUI();
     }
 }
