@@ -5,12 +5,31 @@
 
 package seis.stthomas.edu.domain;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 public class King extends Piece
 {
-    public King(ChessColor newColor, Board boardRef)
+	
+	@SuppressWarnings("unchecked")
+	private final List<ImmutablePair<Integer, Integer>> availableMoves =  Arrays.asList(
+			new  ImmutablePair<Integer, Integer>(0, -1),
+			new  ImmutablePair<Integer, Integer>(0, 1),
+			new  ImmutablePair<Integer, Integer>(1, 0),
+			new  ImmutablePair<Integer, Integer>(-1, 0),
+			new  ImmutablePair<Integer, Integer>(-1, -1),
+			new  ImmutablePair<Integer, Integer>(-1, 1),
+			new  ImmutablePair<Integer, Integer>(-1, -1),
+			new  ImmutablePair<Integer, Integer>(1, 1)
+		);
+	
+	
+    public King(boolean isWhite, Board boardRef)
     {
-        super(newColor, boardRef, 1000);
-        type = PieceType.king;
+        super(isWhite, boardRef, 1000);
     }
     
     /**
@@ -21,13 +40,31 @@ public class King extends Piece
         /* Set all squares adjacent to king in range if they are not
          * occupied by a piece of the same color.
          */
-        setSingleSquareUnlessColorMatch(currentRow-1, currentCol-1);
-        setSingleSquareUnlessColorMatch(currentRow-1, currentCol  );
-        setSingleSquareUnlessColorMatch(currentRow-1, currentCol+1);
-        setSingleSquareUnlessColorMatch(currentRow,   currentCol-1);
-        setSingleSquareUnlessColorMatch(currentRow,   currentCol+1);
-        setSingleSquareUnlessColorMatch(currentRow+1, currentCol-1);
-        setSingleSquareUnlessColorMatch(currentRow+1, currentCol  );
-        setSingleSquareUnlessColorMatch(currentRow+1, currentCol+1);
+
+    	Iterator<ImmutablePair<Integer, Integer>> iterator = getAvailableMoves().iterator();
+    	ImmutablePair<Integer, Integer> move;
+    	while (iterator.hasNext()) {
+    		move = iterator.next();
+    		setSingleSquareUnlessColorMatch(currentRow + move.getLeft().intValue(),currentCol + move.getRight().intValue() );
+    	}
+    	
+    	
+//        setSingleSquareUnlessColorMatch(currentRow-1, currentCol-1);
+//        setSingleSquareUnlessColorMatch(currentRow-1, currentCol  );
+//        setSingleSquareUnlessColorMatch(currentRow-1, currentCol+1);
+//        setSingleSquareUnlessColorMatch(currentRow,   currentCol-1);
+//        setSingleSquareUnlessColorMatch(currentRow,   currentCol+1);
+//        setSingleSquareUnlessColorMatch(currentRow+1, currentCol-1);
+//        setSingleSquareUnlessColorMatch(currentRow+1, currentCol  );
+//        setSingleSquareUnlessColorMatch(currentRow+1, currentCol+1);
     }
+
+	/**
+	 * @return the availableMoves
+	 */
+	public List<ImmutablePair<Integer, Integer>> getAvailableMoves() {
+		return availableMoves;
+	}
+    
+    
 }

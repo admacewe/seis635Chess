@@ -5,8 +5,14 @@
 
 package seis.stthomas.edu.domain;
 
+import org.apache.log4j.Logger;
+
 public class Utilities
 {
+	
+	private static final Logger LOG = Logger.getLogger(Utilities.class
+			.getName());
+	
     /**
      * validSquare - This method checks if the row and column numbers
      *  passed are between 0 and 7 (inclusive).  This indicates whether
@@ -21,6 +27,10 @@ public class Utilities
         {
             valid = true;
         }
+        if (!valid){
+        	LOG.debug("about to return an invlaid square!~");
+        }
+    	LOG.debug("returning :: " + valid);
 
         return valid;
     }

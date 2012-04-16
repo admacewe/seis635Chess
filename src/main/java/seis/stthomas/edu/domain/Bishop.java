@@ -5,12 +5,27 @@
 
 package seis.stthomas.edu.domain;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 public class Bishop extends Piece
+
+
 {
-    public Bishop(ChessColor newColor, Board boardRef)
+	
+	@SuppressWarnings("unchecked")
+	private final List<ImmutablePair<Integer, Integer>> availableMoves =  Arrays.asList(
+			new  ImmutablePair<Integer, Integer>(-1, -1),
+			new  ImmutablePair<Integer, Integer>(-1, 1),
+			new  ImmutablePair<Integer, Integer>(-1, -1),
+			new  ImmutablePair<Integer, Integer>(1, 1)
+		);
+    public Bishop(boolean isWhite, Board boardRef)
     {
-        super(newColor, boardRef, 3);
-        type = PieceType.bishop;
+        super(isWhite, boardRef, 3);
     }
     
     /**
@@ -18,10 +33,26 @@ public class Bishop extends Piece
      */
     public void updateSquaresInRange(int currentRow, int currentCol)
     {   
+    	
+    	Iterator<ImmutablePair<Integer, Integer>> iterator = getAvailableMoves().iterator();
+    	ImmutablePair<Integer, Integer> move;
+    	while (iterator.hasNext()) {
+    		move = iterator.next();
+    		setSquaresOnVector(currentRow,currentCol, move.getLeft().intValue(), move.getRight().intValue() );
+    	}
         // bishop may move along 4 vectors (each diagonal)
-        setSquaresOnVector(currentRow, currentCol, -1, -1);
-        setSquaresOnVector(currentRow, currentCol, -1,  1);
-        setSquaresOnVector(currentRow, currentCol,  1, -1);
-        setSquaresOnVector(currentRow, currentCol,  1,  1);
+//        setSquaresOnVector(currentRow, currentCol, -1, -1);
+//        setSquaresOnVector(currentRow, currentCol, -1,  1);
+//        setSquaresOnVector(currentRow, currentCol,  1, -1);
+//        setSquaresOnVector(currentRow, currentCol,  1,  1);
     }
+
+	/**
+	 * @return the availableMoves
+	 */
+	public List<ImmutablePair<Integer, Integer>> getAvailableMoves() {
+		return availableMoves;
+	}
+    
+    
 }

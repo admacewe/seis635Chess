@@ -8,7 +8,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import seis.stthomas.edu.domain.*;
+import org.apache.log4j.Logger;
+import seis.stthomas.edu.domain.Bishop;
+import seis.stthomas.edu.domain.GameState;
+import seis.stthomas.edu.domain.King;
+import seis.stthomas.edu.domain.Knight;
+import seis.stthomas.edu.domain.Pawn;
+import seis.stthomas.edu.domain.Piece;
+import seis.stthomas.edu.domain.PieceMove;
+import seis.stthomas.edu.domain.Queen;
+import seis.stthomas.edu.domain.Rook;
+import seis.stthomas.edu.domain.SelectionStatus;
 
 public class ChessBoardPanel extends JPanel
 {
@@ -16,6 +26,9 @@ public class ChessBoardPanel extends JPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOG = Logger.getLogger(ChessBoardPanel.class
+			.getName());
 
 	private ChessController controller;
     
@@ -35,7 +48,6 @@ public class ChessBoardPanel extends JPanel
     // components contained in messagePanel
     private JLabel activePlayerMsg;
     private JLabel statusMsg;
-    
     // most recent CPU move
     private PieceMove cpuMove;
     
@@ -45,9 +57,9 @@ public class ChessBoardPanel extends JPanel
      * 
      * @param chessControl
      */
-    public ChessBoardPanel(ChessController chessControl)
+    public ChessBoardPanel(ChessController controller)
     {        
-        controller = chessControl;
+        this.controller = controller;
         
         // Initialize squarePanel
         squareButtons = new JButton[8][8];
@@ -67,6 +79,7 @@ public class ChessBoardPanel extends JPanel
         squarePanel.setBackground(Color.orange);
         squarePanel.setPreferredSize(new Dimension(530, 530));
 
+        // Initialize start panel
         // Initialize start panel
         startVsHumanButton = new JButton("Start Vs Human");
         startVsHumanButton.addActionListener(new StartButtonListener());
@@ -113,18 +126,18 @@ public class ChessBoardPanel extends JPanel
     private void updateButtons(SelectionStatus status, boolean cpuMoved)
     {
         Piece piece;
-        ChessColor color = ChessColor.white;
-        PieceType type = PieceType.pawn;
+        boolean isWhite = true;
+        Class<?> pieceType = Pawn.class;
         
         for(int row = 0; row < 8; row++)
         {
             for(int col = 0; col < 8; col++)
-            {   
+            {                
                 // set the color of the square, to highlight the square
                 // if a piece has been selected, and this square is in
                 // range.
                 if((status == SelectionStatus.pieceValid) &&
-                   (controller.getSquareInRange(row, col)))
+                   (controller.getGame().getSquareInRange(row, col)))
                 {
                     squareButtons[row][col].setBackground(Color.yellow);
                 }
@@ -149,11 +162,11 @@ public class ChessBoardPanel extends JPanel
                 }
                 
                 // set the piece icon in the square
-                piece = controller.getPiece(row, col);
+                piece = controller.getGame().getPiece(row, col);
                 if(piece != null)
                 {
-                    type = piece.getType();
-                    color = piece.getColor();
+                	pieceType = piece.getType();
+                    isWhite = piece.isWhite();
                 }
 
                 // If there is no piece, set the icon to null
@@ -161,31 +174,31 @@ public class ChessBoardPanel extends JPanel
                     squareButtons[row][col].setIcon(null);
 
                 // Handle white pieces
-                else if(type == PieceType.pawn && color == ChessColor.white)
+                else if(pieceType == Pawn.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wPawn.png"));
-                else if(type == PieceType.rook && color == ChessColor.white)
+                else if(pieceType == Rook.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wRook.png"));
-                else if(type == PieceType.knight && color == ChessColor.white)
+                else if(pieceType == Knight.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wKnight.png"));
-                else if(type == PieceType.bishop && color == ChessColor.white)
+                else if(pieceType == Bishop.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wBishop.png"));
-                else if(type == PieceType.queen && color == ChessColor.white)
+                else if(pieceType == Queen.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wQueen.png"));
-                else if(type == PieceType.king && color == ChessColor.white)
+                else if(pieceType == King.class && isWhite == true)
                     squareButtons[row][col].setIcon(new ImageIcon("images/wKing.png"));
 
                 // Handle black pieces...
-                else if(type == PieceType.pawn && color == ChessColor.black)
+                else if(pieceType == Pawn.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bPawn.png"));
-                else if(type == PieceType.rook && color == ChessColor.black)
+                else if(pieceType == Rook.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bRook.png"));
-                else if(type == PieceType.knight && color == ChessColor.black)
+                else if(pieceType == Knight.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bKnight.png"));
-                else if(type == PieceType.bishop && color == ChessColor.black)
+                else if(pieceType == Bishop.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bBishop.png"));
-                else if(type == PieceType.queen && color == ChessColor.black)
+                else if(pieceType == Queen.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bQueen.png"));
-                else if(type == PieceType.king && color == ChessColor.black)
+                else if(pieceType == King.class && isWhite == false)
                     squareButtons[row][col].setIcon(new ImageIcon("images/bKing.png"));
 
                 // This branch is unexpected.  Set icon to null
@@ -197,19 +210,19 @@ public class ChessBoardPanel extends JPanel
     
     private void updateMessages(SelectionStatus status)
     {
-        ChessColor activePlayer = controller.getActivePlayer();
+        boolean activePlayerIsWhite = controller.getGame().getActivePlayerIsWhite();
         
         // Update the player message
         if(status == SelectionStatus.destValidCheckMate)
         {
-            if(activePlayer == ChessColor.white)
+            if(activePlayerIsWhite == true)
                 activePlayerMsg.setText("White player wins!");
             else
                 activePlayerMsg.setText("Black player wins!");
         }
         else if(status != SelectionStatus.invalidState)
         {
-            if(activePlayer == ChessColor.white)
+            if(activePlayerIsWhite == true)
                 activePlayerMsg.setText("White player's turn");
             else
                 activePlayerMsg.setText("Black player's turn");            
@@ -267,11 +280,11 @@ public class ChessBoardPanel extends JPanel
             }
         }
     }
-    
+   
     private class SquareButtonListener implements ActionListener
     {
         SelectionStatus status;
-        
+
         public void actionPerformed(ActionEvent event)
         {
             for(int row = 0; row < 8; row++)
@@ -280,26 +293,34 @@ public class ChessBoardPanel extends JPanel
                 {
                     if(event.getSource() == squareButtons[row][col])
                     {
-                        status = controller.squareSelected(row, col);
+                        status = controller.getGame().squareSelected(row, col);
 
                         // Always update the display after each button press
                         updateButtons(status, false);
                         updateMessages(status);
-                        
-                        if(controller.getState() == GameState.cpuTurn)
+                       
+
+                        if(controller.getGame().getState() == GameState.cpuTurn)
                         {
-                            status = controller.determineCPUMove();
-                            cpuMove = controller.getCPUMove();
+                            try {
+								status = controller.getGame().determineCPUMove();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+                            cpuMove = controller.getGame().getCpuMove();
                             
                             // Always update the display after each button press
                             updateButtons(status, true);
                             updateMessages(status);
-                        }                        
-                        
+                        }  
                         break;
                     }                    
                 }
             }
         }     
-    }    
+    }  
+    
+    
+
 }

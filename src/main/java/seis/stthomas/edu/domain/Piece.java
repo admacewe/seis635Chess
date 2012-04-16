@@ -4,20 +4,26 @@
 
 package seis.stthomas.edu.domain;
 
+import org.apache.log4j.Logger;
+
+
 public abstract class Piece
 {
-    PieceType type;
-    ChessColor color;
+    boolean isWhite;
     Board board;
     boolean hasMoved;
     int value;
     
-    public Piece(ChessColor newColor, Board boardRef, int valueSetting)
+	private static final Logger LOG = Logger.getLogger(Piece.class
+			.getName());
+    
+    
+    public Piece(boolean isWhite, Board boardRef, int value)
     {
-        color = newColor;
-        board = boardRef;
-        value = valueSetting;
-        hasMoved = false;
+        this.isWhite = isWhite;
+        this.board = boardRef;
+        this.hasMoved = false;
+        this.value = value;
     }
     
     /**
@@ -66,7 +72,7 @@ public abstract class Piece
                 else
                 {
                     done = true;
-                    if(piece.getColor() != color)
+                    if(piece.isWhite() != isWhite())
                     {
                         board.setSquareInRange(row, col);
                     }
@@ -103,7 +109,7 @@ public abstract class Piece
             /* If there is a piece on the square, add the square if the color
              * does not match the selected piece's color.
              */
-            else if(piece.getColor() != color)
+            else if(piece.isWhite() != isWhite())
             {
                 board.setSquareInRange(row, col);
             }
@@ -129,7 +135,7 @@ public abstract class Piece
                 /* If there is a piece on the square, add the square if the color
                  * does not match the selected piece's color.
                  */
-                if(piece.getColor() != color)
+                if(piece.isWhite() != isWhite())
                 {
                     board.setSquareInRange(row, col);
                 }
@@ -147,18 +153,20 @@ public abstract class Piece
         return hasMoved;
     }
     
-    public ChessColor getColor()
-    {
-        return color;
-    }
     
-    public PieceType getType()
+
+    public boolean isWhite() {
+		return isWhite;
+	}
+
+	public Class getType()
     {
-        return type;
+        return this.getClass();
     }
-    
-    public int getValue()
-    {
-        return value;
-    }
+
+	public int getValue() {
+		return value;
+	}
+	
+	
 }
