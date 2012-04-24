@@ -1,13 +1,12 @@
-package seis.stthomas.edu.utility;
+package seis.stthomas.edu.ai;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
 import seis.stthomas.edu.domain.Board;
-import seis.stthomas.edu.domain.CPUPlayer;
 import seis.stthomas.edu.domain.Piece;
-import seis.stthomas.edu.domain.PieceMove;
 
 public class BestMoveThread extends Thread implements Runnable, Comparable<BestMoveThread> {
 	
@@ -20,7 +19,7 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 	private boolean isWhite;
 	private int currentScore;
 	private int movesRemaining;
-	private HashMap globalMovesList;
+	private HashMap<Integer, BestMoveThread> globalMovesList;
 	
 	public int score;
 	
@@ -32,7 +31,7 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 	
 	public BestMoveThread(int startCol, int startRow, int destCol, int destRow,
 			Board board, CPUPlayer cpuPlayer, boolean isWhite,
-			int currentScore, int movesRemaining, HashMap globalMovesList) {
+			int currentScore, int movesRemaining, HashMap<?, ?> movesList) {
 		super();
 		this.startCol = startCol;
 		this.startRow = startRow;
@@ -43,7 +42,7 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 		this.isWhite = isWhite;
 		this.currentScore = currentScore;
 		this.movesRemaining = movesRemaining;
-		this.globalMovesList = globalMovesList;
+		this.globalMovesList = (HashMap<Integer, BestMoveThread>) movesList;
 	}
 	
 	
@@ -85,8 +84,23 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				this.score = -1 * move.score;
+				this.score = -1 * move.getScore();
 			}
 
 			// After finding the best score, restore the state of the board
@@ -176,7 +190,7 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 	/**
 	 * @return the globalMovesList
 	 */
-	public HashMap getGlobalMovesList() {
+	public HashMap<?, ?> getGlobalMovesList() {
 		return globalMovesList;
 	}
 

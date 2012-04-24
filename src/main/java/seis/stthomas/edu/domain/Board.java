@@ -7,15 +7,74 @@
 
 package seis.stthomas.edu.domain;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
+
+import seis.stthomas.edu.utility.Utilities;
 
 public class Board {
 	Piece[][] pieces;
 	boolean[][] squareInRange;
+
+	private static final Logger LOG = Logger.getLogger(Board.class.getName());
 	
-    private static final Logger LOG = Logger.getLogger(Board.class.getName());
+	private static final Class[] parameterTypes = {Integer.TYPE, Integer.TYPE,Piece.class,List.class};
 
+	
 
+	//TODO this is has changes to the pieces etc.
+	public Board(int x) {
+		int row;
+		int col;
+
+		pieces = new Piece[8][8];
+
+		// Create black pieces
+		pieces[0][0] = new Rook(false);
+		pieces[0][1] = new Knight(false);
+		pieces[0][2] = new Bishop(false);
+		pieces[0][3] = new Queen(false);
+		pieces[0][4] = new King(false);
+		pieces[0][5] = new Bishop(false);
+		pieces[0][6] = new Knight(false);
+		pieces[0][7] = new Rook(false);
+		for (col = 0; col < 8; col++) {
+			pieces[1][col] = new Pawn(false);
+		}
+
+		// Explicitely set middle rows to null
+		for (row = 2; row < 6; row++) {
+			for (col = 0; col < 8; col++) {
+				pieces[row][col] = null;
+			}
+		}
+
+		// Create white pieces
+		for (col = 0; col < 8; col++) {
+			pieces[6][col] = new Pawn(true);
+		}
+		pieces[7][0] = new Rook(true);
+		pieces[7][1] = new Knight(true);
+		pieces[7][2] = new Bishop(true);
+		pieces[7][3] = new Queen(true);
+		pieces[7][4] = new King(true);
+		pieces[7][5] = new Bishop(true);
+		pieces[7][6] = new Knight(true);
+		pieces[7][7] = new Rook(true);
+
+		// Initialize the squareInRange array
+		squareInRange = new boolean[8][8];
+		clearSquaresInRange();
+	}
+	
 	public Board() {
 		int row;
 		int col;
@@ -203,6 +262,7 @@ public class Board {
 	 */
 	public void setSquareInRange(int row, int col) {
 
+
 		squareInRange[row][col] = Utilities.validSquare(row, col);
 
 	}
@@ -234,11 +294,10 @@ public class Board {
 
 		return piece;
 	}
-	
-    public void setPiece(int row, int col, Piece pieceSetting)
-    {
-        pieces[row][col] = pieceSetting;
-    }
+
+	public void setPiece(int row, int col, Piece pieceSetting) {
+		pieces[row][col] = pieceSetting;
+	}
 
 	private boolean pieceHasValidMove(Piece piece, int pieceRow, int pieceCol) {
 		boolean[][] tryDestRange = new boolean[8][8];
@@ -267,4 +326,258 @@ public class Board {
 
 		return validMove;
 	}
+
+	// BELOW ARE METHODS FROM PIECE!!!
+
+	/**
+	 * setSquaresOnVector - Step along a vector from a starting position, and
+	 * set all squares in range that are empty, until encountering another
+	 * piece. If that piece is not the same color, also add that square to the
+	 * valid range.
+	 * 
+	 * 
+	 */
+	
+	protected void setSquaresOnVector(int startRow, int startCol, Piece incomingPiece, List<ImmutablePair<Integer, Integer>> movesList) {
+		
+		
+		Iterator<ImmutablePair<Integer, Integer>> iterator = movesList
+				.iterator();
+		ImmutablePair<Integer, Integer> move;
+		while (iterator.hasNext()) {
+			move = iterator.next();
+			setSquaresOnVectorInternal(startRow, startCol, move.getLeft()
+					.intValue(), move.getRight().intValue(), incomingPiece);
+		}
+		
+		
+		
+		
+	}
+	protected void setSquaresOnVectorInternal(int startRow, int startCol, int rowDelta,
+			int colDelta, Piece incomingPiece) {
+		boolean done = false;
+		int row = startRow;
+		int col = startCol;
+		Piece piece;
+
+		while (!done) {
+			// apply the delta to move along the vector
+			row += rowDelta;
+			col += colDelta;
+
+			// first check if the square is within the board limits
+			if (Utilities.validSquare(row, col)) {
+				piece = this.getPiece(row, col);
+
+				// if there is no piece on the square, it is a valid square
+				if (piece == null) {
+					this.setSquareInRange(row, col);
+				}
+
+				/*
+				 * If there is a piece on the square, the search is done. Add
+				 * the square if the color does not match the selected piece's
+				 * color.
+				 */
+				else {
+					done = true;
+					if (piece.isWhite() != incomingPiece.isWhite()) {
+						this.setSquareInRange(row, col);
+					}
+				}
+			}
+
+			// If square is not valid, end the search
+			else {
+				done = true;
+			}
+		}
+	}
+	
+	protected void setSingleSquareIfColorMismatch(int row, int col,
+			Piece incomingPiece, List<ImmutablePair<Integer, Integer>> movesList) {
+//		Iterator<ImmutablePair<Integer, Integer>> iterator = movesList
+//				.iterator();
+//		ImmutablePair<Integer, Integer> move;
+//		while (iterator.hasNext()) {
+//			move = iterator.next();
+//			setSingleSquareIfColorMismatch(move.getLeft()
+//					.intValue(), move.getRight().intValue(), incomingPiece);
+//		}
+//		
+		setSingleSquareIfColorMismatch(row, col, incomingPiece);
+		
+		
+	}
+
+	/**
+	 * setSingleSquareIfColorMismatch - Set a single square as being in range if
+	 * the square is occupied and has the opposite color
+	 */
+	protected void setSingleSquareIfColorMismatchWithColor(int row, int col,
+			boolean isWhite) {
+
+		// first check if the square is within the board limits
+		if (Utilities.validSquare(row, col)) {
+			Piece piece = this.getPiece(row, col);
+
+			// if there is no piece on the square, it is a valid square
+			if (piece != null) {
+				/*
+				 * If there is a piece on the square, add the square if the
+				 * color does not match the selected piece's color.
+				 */
+				if (piece.isWhite() != isWhite) {
+					this.setSquareInRange(row, col);
+				}
+			}
+		}
+	}
+	
+    /**
+     * updateSquaresInRange - see description of abstract method in Piece class
+     */
+    public void setSingleSquareIfColorMismatch(int currentRow, int currentCol, Piece incomingPiece){
+    	LOG.debug("current Row is : " + currentRow);
+		LOG.debug("current Col is : " + currentCol);
+
+        // direction based on the current player's color (pawn may only
+        // move up or down based on color)
+        int dir = (incomingPiece.isWhite() == false) ? 1 : -1;
+        LOG.debug("Is White : " + incomingPiece.isWhite());
+
+        LOG.debug("direction is : " + dir);
+        
+        LOG.debug("currentRow+dir" +  + (currentRow+dir));
+
+        // Check if pawn can move forward one space
+        if(this.getPiece(currentRow+dir, currentCol) == null){
+            this.setSquareInRange(currentRow+dir, currentCol);
+            LOG.debug("Can move forward one square");
+
+            
+            // If pawn hasn't moved, check if it can move forward 2 spaces
+            if((!incomingPiece.getHasMoved()) &&
+               (this.getPiece(currentRow+(2*dir), currentCol) == null)){
+                this.setSquareInRange(currentRow+(2*dir), currentCol);
+            }
+        }
+        
+        // Check if there is a piece the pawn can capture
+        setSingleSquareIfColorMismatchWithColor(currentRow+dir, currentCol-1, incomingPiece.isWhite());
+        setSingleSquareIfColorMismatchWithColor(currentRow+dir, currentCol+1, incomingPiece.isWhite());
+    }
+
+	
+	protected void setSingleSquareUnlessColorMatch(int startRow, int startCol, 
+			Piece incomingPiece, List<ImmutablePair<Integer, Integer>> movesList) {
+		
+		
+		Iterator<ImmutablePair<Integer, Integer>> iterator = movesList
+				.iterator();
+		ImmutablePair<Integer, Integer> move;
+		while (iterator.hasNext()) {
+			move = iterator.next();
+			setSingleSquareUnlessColorMatchInternal(startRow
+					+ move.getLeft().intValue(), startCol
+					+ move.getRight().intValue(), incomingPiece);
+		}
+	}
+
+	/**
+	 * setSingleSquareUnlessColorMatch - Set a single square as being in range
+	 * if the square is empty or if it has a piece of the opposite color
+	 */
+	protected void setSingleSquareUnlessColorMatchInternal(int row, int col,
+			Piece incomingPiece) {
+		Piece piece;
+
+		// first check if the square is within the board limits
+		if (Utilities.validSquare(row, col)) {
+			piece = this.getPiece(row, col);
+
+			// if there is no piece on the square, it is a valid square
+			if (piece == null) {
+				this.setSquareInRange(row, col);
+			}
+
+			/*
+			 * If there is a piece on the square, add the square if the color
+			 * does not match the selected piece's color.
+			 */
+			else if (piece.isWhite() != incomingPiece.isWhite()) {
+				this.setSquareInRange(row, col);
+			}
+		}
+	}
+	/*
+	 * @return void
+	 * 
+	 * This method uses reflection to look into the piece type to determine what it's usage contract is.
+	 * Then the method executes that method with the context of the board.
+	 * @exception SecurityException
+	 * @exception NoSuchMethodException
+	 * @exception IllegalArgumentException
+	 * @exception IllegalAccessException
+	 * @exception InvocationTargetException
+
+
+
+	 */
+	
+	public void updateSquaresInRange(int currentRow, int currentCol, Piece incomingPiece) 
+			throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+		
+		List<ImmutablePair<Integer, Integer>> moveList = incomingPiece.getAvailableMoves();
+		LOG.debug("method type for this peice is : " + incomingPiece.getMoveStrategy());
+				
+		this.setPrivateMethodsAccessiableForReflectionOnly(incomingPiece.getMoveStrategy());
+
+		Method method = this.getClass().getDeclaredMethod(incomingPiece.getMoveStrategy(), parameterTypes);
+		Object[] args = {currentRow, currentCol, incomingPiece, moveList};
+
+		method.invoke(this, args);
+	
+	}
+	
+	private void setPrivateMethodsAccessiableForReflectionOnly(String methodName) throws SecurityException, NoSuchMethodException{
+		Method method = Board.class.
+		        getDeclaredMethod(methodName, parameterTypes);
+		method.setAccessible(true);
+	}
+	
+
+	public static void main(String[] args) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		
+		Piece rook = new Rook(true);
+
+		Object[] parameters = new Object[4];
+		parameters[0] = 1;
+		parameters[1] = 2;
+		parameters[2] = rook;
+		parameters[3] = rook.getAvailableMoves() ;
+
+		
+
+
+		
+		Board board = new Board();
+		
+		board.setPrivateMethodsAccessiableForReflectionOnly(rook.getMoveStrategy());
+		Method method3 = board.getClass().getDeclaredMethod(rook.getMoveStrategy(), 
+				parameterTypes);
+		method3.invoke(board, parameters);
+
+            
+
+       
+    
+
+	      
+	      
+
+	}
+	
+	
 }

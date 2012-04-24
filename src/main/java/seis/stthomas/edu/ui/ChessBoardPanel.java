@@ -6,16 +6,19 @@ package seis.stthomas.edu.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.*;
 
 import org.apache.log4j.Logger;
+
+import seis.stthomas.edu.ai.PieceMove;
 import seis.stthomas.edu.domain.Bishop;
 import seis.stthomas.edu.domain.GameState;
 import seis.stthomas.edu.domain.King;
 import seis.stthomas.edu.domain.Knight;
 import seis.stthomas.edu.domain.Pawn;
 import seis.stthomas.edu.domain.Piece;
-import seis.stthomas.edu.domain.PieceMove;
 import seis.stthomas.edu.domain.Queen;
 import seis.stthomas.edu.domain.Rook;
 import seis.stthomas.edu.domain.SelectionStatus;
@@ -75,6 +78,7 @@ public class ChessBoardPanel extends JPanel
                 squarePanel.add(squareButtons[row][col]);                
             }
         }
+        LOG.debug("Created the array");
         
         squarePanel.setBackground(Color.orange);
         squarePanel.setPreferredSize(new Dimension(530, 530));
@@ -157,8 +161,8 @@ public class ChessBoardPanel extends JPanel
                 // if the computer player moved, highlight the starting and ending squares
                 if(cpuMoved)
                 {
-                    squareButtons[cpuMove.startRow][cpuMove.startCol].setBackground(Color.yellow);
-                    squareButtons[cpuMove.destRow][cpuMove.destCol].setBackground(Color.yellow);
+                    squareButtons[cpuMove.getStartRow()][cpuMove.getStartCol()].setBackground(Color.yellow);
+                    squareButtons[cpuMove.getDestRow()][cpuMove.getDestCol()].setBackground(Color.yellow);
                 }
                 
                 // set the piece icon in the square
@@ -293,7 +297,24 @@ public class ChessBoardPanel extends JPanel
                 {
                     if(event.getSource() == squareButtons[row][col])
                     {
-                        status = controller.getGame().squareSelected(row, col);
+                        try {
+							status = controller.getGame().squareSelected(row, col);
+						} catch (SecurityException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IllegalArgumentException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (NoSuchMethodException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IllegalAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InvocationTargetException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 
                         // Always update the display after each button press
                         updateButtons(status, false);
@@ -305,6 +326,21 @@ public class ChessBoardPanel extends JPanel
                             try {
 								status = controller.getGame().determineCPUMove();
 							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (SecurityException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IllegalArgumentException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (NoSuchMethodException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IllegalAccessException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InvocationTargetException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}

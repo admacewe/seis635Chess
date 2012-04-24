@@ -1,6 +1,11 @@
 package seis.stthomas.edu.domain;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.log4j.Logger;
+
+import seis.stthomas.edu.ai.CPUPlayer;
+import seis.stthomas.edu.ai.PieceMove;
 
 public class Game {
 	public Board board;
@@ -40,8 +45,13 @@ public class Game {
 	 * controller that a square at coordinates (row, col) has been selected.
 	 * This method checks if the selection was valid, updates the game state as
 	 * needed, and gives a return status indication to the UI.
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchMethodException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
-	public SelectionStatus squareSelected(int row, int col) {
+	public SelectionStatus squareSelected(int row, int col) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		SelectionStatus status;
 
 		// call the appropriate selection handler based on the game state.
@@ -65,8 +75,13 @@ public class Game {
 	 * when the state is GameState.choosePiece. The square selected must have a
 	 * piece matching the color of the active player. Otherwise, an error status
 	 * will be returned.
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchMethodException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
-	private SelectionStatus pieceSelected(int row, int col) {
+	private SelectionStatus pieceSelected(int row, int col) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Piece piece;
 		SelectionStatus status;
 
@@ -91,7 +106,8 @@ public class Game {
 			// piece identify which squares are in range. The piece will
 			// update the board.
 			this.board.clearSquaresInRange();
-			piece.updateSquaresInRange(row, col);
+//			piece.updateSquaresInRange(row, col);
+			this.board.updateSquaresInRange(row, col, piece);
 
 			// The next step is to wait for a destination square
 			this.state = GameState.chooseDestination;
@@ -164,7 +180,7 @@ public class Game {
 		return status;
 	}
 
-	public SelectionStatus determineCPUMove() throws InterruptedException {
+	public SelectionStatus determineCPUMove() throws InterruptedException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		SelectionStatus status;
 
 		cpuMove = cpuPlayer.selectMove(board);

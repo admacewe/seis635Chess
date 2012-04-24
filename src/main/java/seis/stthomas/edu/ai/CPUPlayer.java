@@ -1,18 +1,17 @@
-package seis.stthomas.edu.domain;
+package seis.stthomas.edu.ai;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import seis.stthomas.edu.utility.BestMoveThread;
+import seis.stthomas.edu.domain.Board;
+import seis.stthomas.edu.domain.Piece;
 
 public class CPUPlayer {
 	private Random rand;
@@ -36,17 +35,17 @@ public class CPUPlayer {
 		}
 	}
 
-	public PieceMove selectMove(Board board) throws InterruptedException {
+	public PieceMove selectMove(Board board) throws InterruptedException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		PieceMove move = pickBestMove(board, false, 0, difficulty - 1);
 
 		if (move != null) {
-			board.tryMove(move.startRow, move.startCol, move.destRow,
-					move.destCol, true, true);
+			board.tryMove(move.getStartRow(), move.getStartCol(), move.getDestRow(),
+					move.getDestCol(), true, true);
 		}
 
-		LOG.info("move from " + move.startRow + ", " + move.startCol + " to "
-				+ move.destRow + ", " + move.destCol + " with score of : "
-				+ move.score);
+		LOG.info("move from " + move.getStartRow() + ", " + move.getStartCol() + " to "
+				+ move.getDestRow() + ", " + move.getDestCol() + " with score of : "
+				+ move.getScore());
 
 		return move;
 	}
@@ -56,15 +55,20 @@ public class CPUPlayer {
 	 * remaining.
 	 * 
 	 * @throws InterruptedException
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchMethodException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
 	public PieceMove pickBestMove(Board board, boolean isWhite,
-			int currentScore, int movesRemaining) throws InterruptedException {
+			int currentScore, int movesRemaining) throws InterruptedException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		long timeNow = new Date().getTime();
 
 		LOG.debug("Entering :: PickBestMove ");
 
 		if (movesList == null) {
-			movesList = new HashMap();
+			movesList = new HashMap<Integer, BestMoveThread>();
 		}
 
 		int startRow;
@@ -87,7 +91,9 @@ public class CPUPlayer {
 				piece = board.getPiece(startRow, startCol);
 				if ((piece != null) && (piece.isWhite() == isWhite)) {
 					board.clearSquaresInRange();
-					piece.updateSquaresInRange(startRow, startCol);
+//					piece.updateSquaresInRange(startRow, startCol);
+					board.updateSquaresInRange(startRow, startCol,piece);
+
 
 					// create a copy of the squaresInRange array
 					for (destRow = 0; destRow < 8; destRow++) {
@@ -117,11 +123,11 @@ public class CPUPlayer {
 
 									// add this move to the candidate list
 									move = new PieceMove();
-									move.startRow = startRow;
-									move.startCol = startCol;
-									move.destCol = destCol;
-									move.destRow = destRow;
-									move.score = score;
+									move.setStartRow(startRow);
+									move.setStartCol(startCol);
+									move.setDestCol(destCol);
+									move.setDestRow(destRow);
+									move.setScore(score);
 									moveCandidates.add(move);
 								}
 							}
@@ -154,10 +160,15 @@ public class CPUPlayer {
 	 * move is made.
 	 * 
 	 * @throws InterruptedException
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 * @throws NoSuchMethodException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
 	 */
 	private int getMoveScore(Board board, int startRow, int startCol,
 			int destRow, int destCol, boolean isWhite, int movesRemaining,
-			int currentScore) throws InterruptedException {
+			int currentScore) throws InterruptedException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		int score;
 		Piece startPiece;
 		Piece destPiece;
@@ -190,7 +201,7 @@ public class CPUPlayer {
 				// a favorable outcome for the active player.
 				move = pickBestMove(board, opponentColorIsWhite, -1
 						* currentScore, movesRemaining - 1);
-				score = -1 * move.score;
+				score = -1 * move.getScore();
 			}
 
 			// After finding the best score, restore the state of the board
@@ -213,7 +224,7 @@ public class CPUPlayer {
 		LOG.debug("Entering :: PickBestMove ");
 
 		if (movesList == null) {
-			movesList = new HashMap();
+			movesList = new HashMap<Integer, BestMoveThread>();
 		}
 
 		int startRow;
@@ -299,11 +310,11 @@ public class CPUPlayer {
 						}
 						// add this move to the candidate list
 						move = new PieceMove();
-						move.startRow = valuesArray[0].getStartRow();
-						move.startCol = valuesArray[0].getStartCol();;
-						move.destCol = valuesArray[0].getDestCol();
-						move.destRow = valuesArray[0].getDestRow();
-						move.score = 0;
+						move.setStartRow(valuesArray[0].getStartRow());
+						move.setStartCol(valuesArray[0].getStartCol());
+						move.setDestCol(valuesArray[0].getDestCol());
+						move.setDestRow(valuesArray[0].getDestRow());
+						move.setScore(0);
 						moveCandidates.add(move);
 					}
 

@@ -7,7 +7,6 @@
 package seis.stthomas.edu.ui;
 
 import org.apache.log4j.Logger;
-
 import seis.stthomas.edu.domain.Game;
 
 public class ChessController {

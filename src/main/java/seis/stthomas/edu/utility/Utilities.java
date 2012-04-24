@@ -3,7 +3,7 @@
  *  classes in the domain.
  */
 
-package seis.stthomas.edu.domain;
+package seis.stthomas.edu.utility;
 
 import org.apache.log4j.Logger;
 
@@ -22,13 +22,19 @@ public class Utilities
     {
         boolean valid = false;
 
-        if((row >= 0) && (row <= 7) &&
-           (col >= 0) && (col <= 7))
-        {
-            valid = true;
-        }
-        if (!valid){
-        	LOG.debug("about to return an invlaid square!~");
+        
+        if(((row >= 0) && (row <= 7))){
+        	if ((col >= 0) && (col <= 7)){
+                valid = true;
+        	} else {
+            	LOG.debug("This col is no good!" + col);
+        	}
+        	
+        } else {
+        	LOG.debug("This row is no good!" + row);
+
+        } if (!valid){
+			LOG.debug("about to return an invlaid square!~");
         }
     	LOG.debug("returning :: " + valid);
 
