@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_seis_stthomas_edu_domain_Game" items="${games}" z="QIop8i3Vt92hpXCEMhclZjYAtzU=">
+        <table:table data="${games}" id="l_seis_stthomas_edu_domain_Game" path="/games" z="AY9n94abYmXyISHXS1TqgVn794Y=">
+            <table:column id="c_seis_stthomas_edu_domain_Game_board" property="board" z="Nn+iW681AVlN02YA/b4q/k+pQ+A="/>
+            <table:column id="c_seis_stthomas_edu_domain_Game_state" property="state" z="LtpdKCjDzVozN8VqxafhxylS4cA="/>
+            <table:column id="c_seis_stthomas_edu_domain_Game_activePlayerIsWhite" property="activePlayerIsWhite" z="Rz1sXtEB8/2ih45UIDNDqSv5OZU="/>
+            <table:column id="c_seis_stthomas_edu_domain_Game_isOpponentCPU" property="isOpponentCPU" z="chz3EKVZqA98JD385EdMQJVJbfA="/>
+            <table:column id="c_seis_stthomas_edu_domain_Game_cpuMove" property="cpuMove" z="7ZQCajf6YakwAoh92fJGTSboL5Y="/>
+            <table:column id="c_seis_stthomas_edu_domain_Game_cpuPlayer" property="cpuPlayer" z="fhKQrArnZudw+MHHUkSAfAAwUiU="/>
+        </table:table>
+    </page:list>
+</div>

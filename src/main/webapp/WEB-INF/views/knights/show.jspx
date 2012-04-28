@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_seis_stthomas_edu_domain_Knight" object="${knight}" path="/knights" z="wP0JRqVQa51Zv/1cU4S1eHwZIcs=">
+        <field:display field="isWhite" id="s_seis_stthomas_edu_domain_Knight_isWhite" object="${knight}" z="srHWPHwOOvhzrFzrDvGoBLtWU2A="/>
+        <field:display field="hasMoved" id="s_seis_stthomas_edu_domain_Knight_hasMoved" object="${knight}" z="+rhp9hC747maSsIjb1biicvd7Qk="/>
+        <field:display field="pieceValue" id="s_seis_stthomas_edu_domain_Knight_pieceValue" object="${knight}" z="PwBYZl7Cv8k0g93jUwUXKW73jb4="/>
+        <field:display field="board" id="s_seis_stthomas_edu_domain_Knight_board" object="${knight}" z="g+FXcxIvUqkYuEidEUOokk43td0="/>
+    </page:show>
+</div>

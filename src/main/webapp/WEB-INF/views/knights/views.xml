@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="knights/list">
+        <put-attribute name="body" value="/WEB-INF/views/knights/list.jspx"/>
+    </definition>
+<definition extends="default" name="knights/show">
+        <put-attribute name="body" value="/WEB-INF/views/knights/show.jspx"/>
+    </definition>
+<definition extends="default" name="knights/create">
+        <put-attribute name="body" value="/WEB-INF/views/knights/create.jspx"/>
+    </definition>
+<definition extends="default" name="knights/update">
+        <put-attribute name="body" value="/WEB-INF/views/knights/update.jspx"/>
+    </definition>
+</tiles-definitions>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_seis_stthomas_edu_ai_PieceMove" object="${piecemove}" path="/piecemoves" z="5ExFV42A56nCLmfNO3ov6ZdYfbI=">
+        <field:display field="startRow" id="s_seis_stthomas_edu_ai_PieceMove_startRow" object="${piecemove}" z="j1OYlSYVn/8LI0b8ibaBrZfqvjM="/>
+        <field:display field="startCol" id="s_seis_stthomas_edu_ai_PieceMove_startCol" object="${piecemove}" z="0XGxRqC00jamggEJrRQ54y1SxwU="/>
+        <field:display field="destRow" id="s_seis_stthomas_edu_ai_PieceMove_destRow" object="${piecemove}" z="hSWwyl8AP4flriqzzaxWT/yeYBE="/>
+        <field:display field="destCol" id="s_seis_stthomas_edu_ai_PieceMove_destCol" object="${piecemove}" z="IHh51AbXKaLZQZwA5HRS9WXwYmo="/>
+        <field:display field="score" id="s_seis_stthomas_edu_ai_PieceMove_score" object="${piecemove}" z="NWnAMZFf0t39Ho81sVe71Ngyg+g="/>
+    </page:show>
+</div>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_seis_stthomas_edu_domain_Game" object="${game}" path="/games" z="6Sbw5LyIOEEsHJFECceATErrRrE=">
+        <field:display field="board" id="s_seis_stthomas_edu_domain_Game_board" object="${game}" z="3pH8Nmox8JNnfqaZuDVh2u0yCY0="/>
+        <field:display field="state" id="s_seis_stthomas_edu_domain_Game_state" object="${game}" z="2KKIQEItJkDSyfWSfLtTGsCiRiM="/>
+        <field:display field="activePlayerIsWhite" id="s_seis_stthomas_edu_domain_Game_activePlayerIsWhite" object="${game}" z="Pp0RzFH7m06zDOkyzia0aWwP0es="/>
+        <field:display field="pieceRow" id="s_seis_stthomas_edu_domain_Game_pieceRow" object="${game}" z="sBniyh0Rnp5BN5L/iUrzbBzi/e0="/>
+        <field:display field="pieceCol" id="s_seis_stthomas_edu_domain_Game_pieceCol" object="${game}" z="s5r2gsAZOpECAvyodTeMHDRdGxg="/>
+        <field:display field="name" id="s_seis_stthomas_edu_domain_Game_name" object="${game}" z="Ld6rjFgH9Xtk6Knx1G2gZaCUShg="/>
+        <field:display field="isOpponentCPU" id="s_seis_stthomas_edu_domain_Game_isOpponentCPU" object="${game}" z="9vK8kEdu/kSwJnFT54odnXLBwu0="/>
+        <field:display field="cpuMove" id="s_seis_stthomas_edu_domain_Game_cpuMove" object="${game}" z="IwaZj2FHXoBr0etYdTqS2MsBNt8="/>
+        <field:display field="cpuPlayer" id="s_seis_stthomas_edu_domain_Game_cpuPlayer" object="${game}" z="+j1+ZxfbGwz750nUncMaZNUc5wk="/>
+    </page:show>
+</div>

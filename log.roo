@@ -1,0 +1,2 @@
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-28 12:14:05
+jpa setup --database HYPERSONIC_IN_MEMORY --provider HIBERNATE 

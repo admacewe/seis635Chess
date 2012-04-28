@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_seis_stthomas_edu_ai_PieceMove" items="${piecemoves}" z="e7KmvKsZnrHcgmtJ/tV/mJtz8j4=">
+        <table:table data="${piecemoves}" id="l_seis_stthomas_edu_ai_PieceMove" path="/piecemoves" z="rUBYkqnrD3EKXcPpW+bs/1uMynw=">
+            <table:column id="c_seis_stthomas_edu_ai_PieceMove_startRow" property="startRow" z="H7zLLDHvsWGDCsiLFmC7iw2M/RQ="/>
+            <table:column id="c_seis_stthomas_edu_ai_PieceMove_startCol" property="startCol" z="+pgZ5E8xMJ9U++6WT4W6ULhdGk4="/>
+            <table:column id="c_seis_stthomas_edu_ai_PieceMove_destRow" property="destRow" z="YDjDJZqHmD5/YiexmvGB9dDzXWE="/>
+            <table:column id="c_seis_stthomas_edu_ai_PieceMove_destCol" property="destCol" z="ZCdbt+Dl6ozP0SN9Mabtx7by4lU="/>
+            <table:column id="c_seis_stthomas_edu_ai_PieceMove_score" property="score" z="r+CpC6gXT0HTadqhcw53ZNW28yA="/>
+        </table:table>
+    </page:list>
+</div>

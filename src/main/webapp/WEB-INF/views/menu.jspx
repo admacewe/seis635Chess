@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_piecemove" z="eu8kDwsR7m/vdqUG0kvqhyyIvbQ=">
+            <menu:item id="i_piecemove_new" messageCode="global_menu_new" url="/piecemoves?form" z="59eofzNq60vzqhFFCbRfey4Xpc8="/>
+            <menu:item id="i_piecemove_list" messageCode="global_menu_list" url="/piecemoves?page=1&amp;size=${empty param.size ? 10 : param.size}" z="cYjirYs1EQdXjfm//61QbZj1ZgY="/>
+        </menu:category>
+        <menu:category id="c_king" z="Wf6BxzFD1SRvWY58dwrKl5x9qa4=">
+            <menu:item id="i_king_new" messageCode="global_menu_new" url="/kings?form" z="BNnIq/rkQT7xisBO9vKzz9IZBwQ="/>
+            <menu:item id="i_king_list" messageCode="global_menu_list" url="/kings?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Y1C3MjU5LOwXnY52Qx5gLSao9WU="/>
+        </menu:category>
+        <menu:category id="c_game" z="2kd/06qS5R1ulGaBKqjkf+qriAA=">
+            <menu:item id="i_game_new" messageCode="global_menu_new" url="/games?form" z="cbApva5tgrDz/jmFy9M1rtm6WvQ="/>
+            <menu:item id="i_game_list" messageCode="global_menu_list" url="/games?page=1&amp;size=${empty param.size ? 10 : param.size}" z="48NWieNgYE1J83qxtuhIJZ761Oc="/>
+        </menu:category>
+        <menu:category id="c_queen" z="Jz8YmTJ7J5fId3vKT4snSOPtXjE=">
+            <menu:item id="i_queen_new" messageCode="global_menu_new" url="/queens?form" z="TOPmRLsMSZFHcK3b+ZDEVy4vYRc="/>
+            <menu:item id="i_queen_list" messageCode="global_menu_list" url="/queens?page=1&amp;size=${empty param.size ? 10 : param.size}" z="3PwX98VBmgDc2SscjPu3dgQ1FUM="/>
+        </menu:category>
+        <menu:category id="c_rook" z="9sV+8GFYfMkFUB/ZbkmYWQTCdng=">
+            <menu:item id="i_rook_new" messageCode="global_menu_new" url="/rooks?form" z="9ejqzoSz7M2ksifYfLbdmjQNSlQ="/>
+            <menu:item id="i_rook_list" messageCode="global_menu_list" url="/rooks?page=1&amp;size=${empty param.size ? 10 : param.size}" z="fEaVT/qOn169qKw7A2PzzDDoGBU="/>
+        </menu:category>
+        <menu:category id="c_board" z="IrL7V3qpZgOpHWxfVWm7mn12+5E=">
+            <menu:item id="i_board_new" messageCode="global_menu_new" url="/boards?form" z="ajc86VhbmT5XTI+uwOG8GwAhZiA="/>
+            <menu:item id="i_board_list" messageCode="global_menu_list" url="/boards?page=1&amp;size=${empty param.size ? 10 : param.size}" z="gEDlzZGRLkwZUVSO2QapBFC/C5U="/>
+        </menu:category>
+        <menu:category id="c_pawn" z="i0RIx7hASM1l52SY+/BOvEOoh9g=">
+            <menu:item id="i_pawn_new" messageCode="global_menu_new" url="/pawns?form" z="wz7o2Fy0iQmPHX3bOfnpUFsGbMg="/>
+            <menu:item id="i_pawn_list" messageCode="global_menu_list" url="/pawns?page=1&amp;size=${empty param.size ? 10 : param.size}" z="jrio3qexkv/lCX4puorvbDPLEQA="/>
+        </menu:category>
+        <menu:category id="c_knight" z="15L13vF264prm8tNfHC+eIqyyks=">
+            <menu:item id="i_knight_new" messageCode="global_menu_new" url="/knights?form" z="P/S+qm1qAjXYabrOQhBkGeEDwtU="/>
+            <menu:item id="i_knight_list" messageCode="global_menu_list" url="/knights?page=1&amp;size=${empty param.size ? 10 : param.size}" z="/cWQyg+n7BlIypo8KMvM4Sq+G5I="/>
+        </menu:category>
+        <menu:category id="c_bishop" z="JPxgRp4ekJmf6OhzVGmF+2pqJn8=">
+            <menu:item id="i_bishop_new" messageCode="global_menu_new" url="/bishops?form" z="vRFMRQhVa+7UOhHhSttGZfqesaM="/>
+            <menu:item id="i_bishop_list" messageCode="global_menu_list" url="/bishops?page=1&amp;size=${empty param.size ? 10 : param.size}" z="HFSMiFmKbohbtsSV62jlik8G0dI="/>
+        </menu:category>
+        <menu:category id="c_square" z="ME9gMElCewwMIe+Mq46XaR8lvy0=">
+            <menu:item id="i_square_new" messageCode="global_menu_new" url="/squares?form" z="C8pRBmjuNFhd6b1oFziGd0JEp7E="/>
+            <menu:item id="i_square_list" messageCode="global_menu_list" url="/squares?page=1&amp;size=${empty param.size ? 10 : param.size}" z="g9DdXa8LJGLLWMR5PDzCAIiY4M4="/>
+        </menu:category>
+    </menu:menu>
+</div>

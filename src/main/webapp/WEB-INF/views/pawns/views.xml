@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="pawns/list">
+        <put-attribute name="body" value="/WEB-INF/views/pawns/list.jspx"/>
+    </definition>
+<definition extends="default" name="pawns/show">
+        <put-attribute name="body" value="/WEB-INF/views/pawns/show.jspx"/>
+    </definition>
+<definition extends="default" name="pawns/create">
+        <put-attribute name="body" value="/WEB-INF/views/pawns/create.jspx"/>
+    </definition>
+<definition extends="default" name="pawns/update">
+        <put-attribute name="body" value="/WEB-INF/views/pawns/update.jspx"/>
+    </definition>
+</tiles-definitions>

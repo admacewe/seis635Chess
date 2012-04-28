@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_seis_stthomas_edu_domain_Queen" items="${queens}" z="viQFw23qJ7SGPH6OYsD6ADWstCU=">
+        <table:table data="${queens}" id="l_seis_stthomas_edu_domain_Queen" path="/queens" z="aN3qsChmxk4klVRsDpd3ulhTYX8=">
+            <table:column id="c_seis_stthomas_edu_domain_Queen_isWhite" property="isWhite" z="bW/4OfH7PonyE7Cfafrbf6fTb3g="/>
+            <table:column id="c_seis_stthomas_edu_domain_Queen_hasMoved" property="hasMoved" z="rzODn7Vmk0HXJNWZI8DDbKSfRGs="/>
+            <table:column id="c_seis_stthomas_edu_domain_Queen_pieceValue" property="pieceValue" z="g0ul4mBtfnefokbAj0e0ozNrv1c="/>
+            <table:column id="c_seis_stthomas_edu_domain_Queen_board" property="board" z="ituqmzDAdHr401WraR/+Qk7xRZY="/>
+        </table:table>
+    </page:list>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_seis_stthomas_edu_domain_Knight" modelAttribute="knight" path="/knights" render="${empty dependencies}" z="ugAsUDbndCldTUX0JBwkUd0dFu4=">
+        <field:checkbox field="isWhite" id="c_seis_stthomas_edu_domain_Knight_isWhite" z="TDOgcrx8sy4hxbBx14/mqeaPHHE="/>
+        <field:checkbox field="hasMoved" id="c_seis_stthomas_edu_domain_Knight_hasMoved" z="zjivFI6Fb5li3owQAMYgE4c+vfc="/>
+        <field:input field="pieceValue" id="c_seis_stthomas_edu_domain_Knight_pieceValue" z="emgSO3fiC+NibF/28Ow+0IyICQg="/>
+        <field:select field="board" id="c_seis_stthomas_edu_domain_Knight_board" itemValue="id" items="${boards}" path="/boards" z="uhewK5WsOaYILqMGNtYJW2+pgTI="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_seis_stthomas_edu_domain_Knight" render="${not empty dependencies}" z="sH5GLe13iGzRSNfy5TONs2Sw5gE="/>
+</div>

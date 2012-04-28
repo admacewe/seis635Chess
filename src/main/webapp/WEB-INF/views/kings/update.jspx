@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_seis_stthomas_edu_domain_King" modelAttribute="king" path="/kings" versionField="Version" z="zfTAWelXIMmJpmdJdzCseGPO4kk=">
+        <field:checkbox field="isWhite" id="c_seis_stthomas_edu_domain_King_isWhite" z="yc2+q0Kyui22lE66C77jqCjyrck="/>
+        <field:checkbox field="hasMoved" id="c_seis_stthomas_edu_domain_King_hasMoved" z="YehTUZv9FxvLG0pG0px6BJFgb4k="/>
+        <field:input field="pieceValue" id="c_seis_stthomas_edu_domain_King_pieceValue" z="DBGR5hOvsC4zySWBI+7YmHipe5A="/>
+        <field:select field="board" id="c_seis_stthomas_edu_domain_King_board" itemValue="id" items="${boards}" path="/boards" z="3K7imGtlwVfkbcOFvd94LOKMKZw="/>
+    </form:update>
+</div>

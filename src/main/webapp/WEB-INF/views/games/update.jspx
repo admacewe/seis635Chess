@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_seis_stthomas_edu_domain_Game" modelAttribute="game" path="/games" versionField="Version" z="RLQwEuCnKXksZXMZDAk3KhxQjZA=">
+        <field:select field="board" id="c_seis_stthomas_edu_domain_Game_board" itemValue="id" items="${boards}" path="/boards" z="K6ZdljQUVcBo0uVLjg5Y+IIYViw="/>
+        <field:select field="state" id="c_seis_stthomas_edu_domain_Game_state" items="${gamestates}" path="gamestates" z="508EALVeeW3zWZLS4kJkpVvteWc="/>
+        <field:checkbox field="activePlayerIsWhite" id="c_seis_stthomas_edu_domain_Game_activePlayerIsWhite" z="uG5ZLIef66URKFW/q+9HiFeOm40="/>
+        <field:input field="pieceRow" id="c_seis_stthomas_edu_domain_Game_pieceRow" z="s/z1jAfGhG1W5BSMVctdQvlW8x8="/>
+        <field:input field="pieceCol" id="c_seis_stthomas_edu_domain_Game_pieceCol" z="tPbN4/xR0GDVsxfYmAhMa0eQT+4="/>
+        <field:input field="name" id="c_seis_stthomas_edu_domain_Game_name" z="XjmXxwrW4GR8fOIZPHIxnhBRZz4="/>
+        <field:checkbox field="isOpponentCPU" id="c_seis_stthomas_edu_domain_Game_isOpponentCPU" z="dEWHPrM98nE/8OGVItrdgw5aK5o="/>
+        <field:input field="cpuMove" id="c_seis_stthomas_edu_domain_Game_cpuMove" z="+FjHeuI+OuTr3Er8X8N8TX/UZSs="/>
+        <field:input field="cpuPlayer" id="c_seis_stthomas_edu_domain_Game_cpuPlayer" z="qAv6ibDW6iuR5McCijnCgU1s9Bw="/>
+    </form:update>
+</div>
