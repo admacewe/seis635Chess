@@ -1,70 +1,33 @@
-/**
- * Knight - extends the Piece class, and defines the valid move for the knight
- *  chess piece.
- */
-
 package seis.stthomas.edu.domain;
 
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.roo.addon.javabean.RooJavaBean;
+import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.json.RooJson;
+import org.springframework.roo.addon.tostring.RooToString;
 
-public class Knight extends Piece {
+@RooJavaBean
+@RooToString
+@RooJpaActiveRecord
+@RooJson
+public class Knight extends Piece implements Serializable {
 
-	@SuppressWarnings("unchecked")
-	private final List<ImmutablePair<Integer, Integer>> availableMoves = Arrays
-			.asList(new ImmutablePair<Integer, Integer>(-2, -1),
-					new ImmutablePair<Integer, Integer>(-2, 1),
-					new ImmutablePair<Integer, Integer>(-1, -2),
-					new ImmutablePair<Integer, Integer>(-1, 2),
-					new ImmutablePair<Integer, Integer>(1, -2),
-					new ImmutablePair<Integer, Integer>(1, 2),
-					new ImmutablePair<Integer, Integer>(2, -1),
-					new ImmutablePair<Integer, Integer>(2, 1));
+    private static final long serialVersionUID = 1887051257141793527L;
 
-	private final String moveStrategy = "setSingleSquareUnlessColorMatch";
+    private final String moveStrategy = "setSingleSquareUnlessColorMatch";
 
-	public Knight(boolean isWhite, Board boardRef) {
-		super(isWhite, boardRef, 3);
-	}
-	
-	public Knight(boolean isWhite) {
-		super(isWhite, 3);
-	}
+    public Knight(boolean isWhite) {
+        super(isWhite, 3);
+    }
 
-	/**
-	 * updateSquaresInRange - see description of abstract method in Piece class
-	 */
-	public void updateSquaresInRange(int currentRow, int currentCol) {
-		/*
-		 * Check each of the eight possible ways a knight can move. Add it to
-		 * the selectable range if it is not occupied by a piece of the same
-		 * color.
-		 */
+    public List<org.apache.commons.lang3.tuple.ImmutablePair<java.lang.Integer, java.lang.Integer>> getAvailableMoves() {
+        return Arrays.asList(new ImmutablePair<Integer, Integer>(-2, -1), new ImmutablePair<Integer, Integer>(-2, 1), new ImmutablePair<Integer, Integer>(-1, -2), new ImmutablePair<Integer, Integer>(-1, 2), new ImmutablePair<Integer, Integer>(1, -2), new ImmutablePair<Integer, Integer>(1, 2), new ImmutablePair<Integer, Integer>(2, -1), new ImmutablePair<Integer, Integer>(2, 1));
+    }
 
-		Iterator<ImmutablePair<Integer, Integer>> iterator = getAvailableMoves()
-				.iterator();
-		ImmutablePair<Integer, Integer> move;
-		while (iterator.hasNext()) {
-			move = iterator.next();
-			setSingleSquareUnlessColorMatch(currentRow
-					+ move.getLeft().intValue(), currentCol
-					+ move.getRight().intValue());
-		}
-
-	}
-
-	public List<ImmutablePair<Integer, Integer>> getAvailableMoves() {
-		return availableMoves;
-	}
-
-	/**
-	 * @return the moveStrategy
-	 */
-	public String getMoveStrategy() {
-		return moveStrategy;
-	}
-
+    public String getMoveStrategy() {
+        return moveStrategy;
+    }
 }

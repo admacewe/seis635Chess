@@ -1,68 +1,35 @@
-/**
- * Bishop - extends the Piece class, and defines the valid move for the bishop
- *  chess piece.
- */
-
 package seis.stthomas.edu.domain;
 
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.springframework.roo.addon.javabean.RooJavaBean;
+import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.json.RooJson;
+import org.springframework.roo.addon.tostring.RooToString;
 
-public class Bishop extends Piece
+@RooJavaBean
+@RooToString
+@RooJpaActiveRecord
+@RooJson
+public class Bishop extends Piece implements Serializable {
 
-{
+    private static final long serialVersionUID = -7043646288736586788L;
 
-	@SuppressWarnings("unchecked")
-	private final List<ImmutablePair<Integer, Integer>> availableMoves = Arrays
-			.asList(new ImmutablePair<Integer, Integer>(-1, -1),
-					new ImmutablePair<Integer, Integer>(-1, 1),
-					new ImmutablePair<Integer, Integer>(1, -1),
-					new ImmutablePair<Integer, Integer>(1, 1));
-	
-	private final String moveStrategy = "setSquaresOnVector";
+    private final String moveStrategy = "setSquaresOnVector";
 
+    public Bishop(boolean isWhite) {
+        super(isWhite, 3);
+    }
 
-	public Bishop(boolean isWhite, Board boardRef) {
-		super(isWhite, boardRef, 3);
-	}
-	
-	public Bishop(boolean isWhite) {
-		super(isWhite,  3);
-	}
+    @Override
+    public String getMoveStrategy() {
+        return moveStrategy;
+    }
 
-	/**
-	 * updateSquaresInRange - see description of abstract method in Piece class
-	 */
-	public void updateSquaresInRange(int currentRow, int currentCol) {
-
-		Iterator<ImmutablePair<Integer, Integer>> iterator = getAvailableMoves()
-				.iterator();
-		ImmutablePair<Integer, Integer> move;
-		while (iterator.hasNext()) {
-			move = iterator.next();
-			setSquaresOnVector(currentRow, currentCol, move.getLeft()
-					.intValue(), move.getRight().intValue());
-		}
-
-	}
-
-	/**
-	 * @return the availableMoves
-	 */
-	public List<ImmutablePair<Integer, Integer>> getAvailableMoves() {
-		return availableMoves;
-	}
-
-	/**
-	 * @return the moveStrategy
-	 */
-	public String getMoveStrategy() {
-		return moveStrategy;
-	}
-	
-	
-
+    @Override
+    public List<org.apache.commons.lang3.tuple.ImmutablePair<java.lang.Integer, java.lang.Integer>> getAvailableMoves() {
+        return Arrays.asList(new ImmutablePair<Integer, Integer>(-1, -1), new ImmutablePair<Integer, Integer>(-1, 1), new ImmutablePair<Integer, Integer>(1, -1), new ImmutablePair<Integer, Integer>(1, 1));
+    }
 }

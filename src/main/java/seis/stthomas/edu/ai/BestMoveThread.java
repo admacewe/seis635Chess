@@ -63,54 +63,71 @@ public class BestMoveThread extends Thread implements Runnable, Comparable<BestM
 
 		// get the value of the piece that is captured, if any
 		if (destPiece != null) {
-			currentScore += destPiece.getValue();
+			currentScore += destPiece.getPieceValue();
 		}
 
 		// update the board with the new move
-		if (board.tryMove(startRow, startCol, destRow, destCol, true, false)) {
-			// if the move was valid, check if there are more moves to evaluate
-			if (movesRemaining <= 0) {
-				this.score = currentScore;
+		try {
+			if (board.tryMove(startRow, startCol, destRow, destCol, true, false)) {
+				// if the move was valid, check if there are more moves to evaluate
+				if (movesRemaining <= 0) {
+					this.score = currentScore;
 
-			} else {
-				// Request the opponent to pick their best move. The score is
-				// inverted when
-				// passed to the opponent, and when returned, because a high
-				// score indicates
-				// a favorable outcome for the active player.
-				try {
-					move = cpuPlayer.pickBestMove(board, opponentColorIsWhite, -1
-							* currentScore, movesRemaining - 1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} else {
+					// Request the opponent to pick their best move. The score is
+					// inverted when
+					// passed to the opponent, and when returned, because a high
+					// score indicates
+					// a favorable outcome for the active player.
+					try {
+						move = cpuPlayer.pickBestMove(board, opponentColorIsWhite, -1
+								* currentScore, movesRemaining - 1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					this.score = -1 * move.getScore();
 				}
-				this.score = -1 * move.getScore();
+
+				// After finding the best score, restore the state of the board
+				board.setPiece(startRow, startCol, startPiece);
+				board.setPiece(destRow, destCol, destPiece);
+			} else {
+				// move placed self in check - return the invalid move score
+				this.score = cpuPlayer.INVALID_SCORE;
+
+				// no need to undo the move here, because tryMove already undid it
 			}
-
-			// After finding the best score, restore the state of the board
-			board.setPiece(startRow, startCol, startPiece);
-			board.setPiece(destRow, destCol, destPiece);
-		} else {
-			// move placed self in check - return the invalid move score
-			this.score = cpuPlayer.INVALID_SCORE;
-
-			// no need to undo the move here, because tryMove already undid it
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		LOG.debug("score :: "+ score);
 		LOG.debug("Exiting :: getMoveScore ");

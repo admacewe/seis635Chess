@@ -67,9 +67,9 @@ public class CPUPlayer {
 
 		LOG.debug("Entering :: PickBestMove ");
 
-		if (movesList == null) {
-			movesList = new HashMap<Integer, BestMoveThread>();
-		}
+//		if (movesList == null) {
+//			movesList = new HashMap<Integer, BestMoveThread>();
+//		}
 
 		int startRow;
 		int startCol;
@@ -89,7 +89,7 @@ public class CPUPlayer {
 				// if there is a piece of the player's color, check where it can
 				// move
 				piece = board.getPiece(startRow, startCol);
-				if ((piece != null) && (piece.isWhite() == isWhite)) {
+				if ((piece != null) && (piece.isIsWhite() == isWhite)) {
 					board.clearSquaresInRange();
 //					piece.updateSquaresInRange(startRow, startCol);
 					board.updateSquaresInRange(startRow, startCol,piece);
@@ -185,7 +185,7 @@ public class CPUPlayer {
 
 		// get the value of the piece that is captured, if any
 		if (destPiece != null) {
-			currentScore += destPiece.getValue();
+			currentScore += destPiece.getPieceValue();
 		}
 
 		// update the board with the new move
@@ -218,7 +218,7 @@ public class CPUPlayer {
 	}
 
 	public PieceMove pickBestMoveThreaded(Board board, boolean isWhite,
-			int currentScore, int movesRemaining) throws InterruptedException {
+			int currentScore, int movesRemaining) throws InterruptedException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		long timeNow = new Date().getTime();
 
 		LOG.debug("Entering :: PickBestMove ");
@@ -244,9 +244,9 @@ public class CPUPlayer {
 				// if there is a piece of the player's color, check where it can
 				// move
 				piece = board.getPiece(startRow, startCol);
-				if ((piece != null) && (piece.isWhite() == isWhite)) {
+				if ((piece != null) && (piece.isIsWhite() == isWhite)) {
 					board.clearSquaresInRange();
-					piece.updateSquaresInRange(startRow, startCol);
+					board.updateSquaresInRange(startRow, startCol,piece);
 
 					// create a copy of the squaresInRange array
 					for (destRow = 0; destRow < 8; destRow++) {
