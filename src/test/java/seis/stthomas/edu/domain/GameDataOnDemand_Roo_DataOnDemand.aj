@@ -13,6 +13,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import seis.stthomas.edu.domain.Board;
+import seis.stthomas.edu.domain.BoardDataOnDemand;
 import seis.stthomas.edu.domain.Game;
 import seis.stthomas.edu.domain.GameDataOnDemand;
 import seis.stthomas.edu.domain.GameState;
@@ -25,6 +26,9 @@ privileged aspect GameDataOnDemand_Roo_DataOnDemand {
     private Random GameDataOnDemand.rnd = new SecureRandom();
     
     private List<Game> GameDataOnDemand.data;
+    
+    @Autowired
+    private BoardDataOnDemand GameDataOnDemand.boardDataOnDemand;
     
     @Autowired
     GameService GameDataOnDemand.gameService;
@@ -45,7 +49,7 @@ privileged aspect GameDataOnDemand_Roo_DataOnDemand {
     }
     
     public void GameDataOnDemand.setBoard(Game obj, int index) {
-        Board board = null;
+        Board board = boardDataOnDemand.getSpecificBoard(index);
         obj.setBoard(board);
     }
     

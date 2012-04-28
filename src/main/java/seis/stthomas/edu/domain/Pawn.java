@@ -18,7 +18,7 @@ public class Pawn extends Piece implements Serializable {
 
     private static final long serialVersionUID = -5142208897301264883L;
 
-    private final String moveStrategy = "setSingleSquareIfColorMismatch";
+    private final String moveStrategy = "pawnMoveStrategy";
 
     public Pawn(boolean isWhite) {
         super(isWhite, 1);

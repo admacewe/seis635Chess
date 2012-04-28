@@ -134,7 +134,7 @@ public class Board implements Serializable {
         }
     }
 
-    public void setSquareInRange(int row, int col) {
+	public void setSquareInRange(int row, int col) {
         squareInRange.get(row * 8 + col).setInRange(Utilities.validSquare(row, col));
     }
 
@@ -209,7 +209,7 @@ public class Board implements Serializable {
         }
     }
 
-    protected void setSingleSquareIfColorMismatch(int row, int col, Piece incomingPiece, List<org.apache.commons.lang3.tuple.ImmutablePair<java.lang.Integer, java.lang.Integer>> movesList) {
+    protected void pawnMoveStrategy(int row, int col, Piece incomingPiece, List<org.apache.commons.lang3.tuple.ImmutablePair<java.lang.Integer, java.lang.Integer>> movesList) {
         setSingleSquareIfColorMismatch(row, col, incomingPiece);
     }
 
