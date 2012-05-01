@@ -34,12 +34,14 @@ public class ChessBoardPanel extends JPanel {
 			.getName());
 
 	private ChessController controller;
-	Long selectedGameId = null;
+	String selectedGameName = null;
 
 	// panels used in the display
 	private JPanel squarePanel; // contains the squares making up the
 								// tic-tac-toe board
 	private JPanel startPanel; // contains the start button
+	private JPanel persistPanel;
+
 	private JPanel playerMsgPanel; // indicates the active player, or winner
 	private JPanel statusMsgPanel; // gives status messages
 
@@ -60,7 +62,8 @@ public class ChessBoardPanel extends JPanel {
 	private JLabel statusMsg;
 	// most recent CPU move
 	private PieceMove cpuMove;
-	private Integer selectedDifficulty = 2;
+	private Integer selectedDifficulty = 3;
+
 
 
 	/**
@@ -100,7 +103,7 @@ public class ChessBoardPanel extends JPanel {
 		saveGameButton.addActionListener(new StartButtonListener());
 		loadGameButton = new JButton("Load Game");
 		loadGameButton.addActionListener(new StartButtonListener());
-		gameList = new JComboBox(controller.getGameIds());
+		gameList = new JComboBox(controller.getGameNames());
 		gameList.addActionListener(new StartButtonListener());
 		String[] difficultyOptions = {"1","2","3","4","5","6"};
 
@@ -112,12 +115,17 @@ public class ChessBoardPanel extends JPanel {
 		startPanel.add(startVsHumanButton);
 		startPanel.add(startVsCPUButton);
 		startPanel.add(cpuDifficulty);
-		startPanel.add(saveGameButton);
-		startPanel.add(loadGameButton);
-		startPanel.add(gameList);
+
 		startPanel.setBackground(Color.orange);
 		startPanel.setPreferredSize(new Dimension(600, 40));
-
+		
+		persistPanel = new JPanel();
+		persistPanel.add(saveGameButton);
+		persistPanel.add(loadGameButton);
+		persistPanel.add(gameList);
+		persistPanel.setBackground(Color.orange);
+		persistPanel.setPreferredSize(new Dimension(600, 40));
+		
 		// Initialize playerMsgPanel
 		activePlayerMsg = new JLabel();
 		playerMsgPanel = new JPanel();
@@ -134,9 +142,10 @@ public class ChessBoardPanel extends JPanel {
 
 		// set the position of the sub-panels within the main panel
 		setBackground(Color.orange);
-		setPreferredSize(new Dimension(650, 650));
+		setPreferredSize(new Dimension(650, 750));
 		add(squarePanel);
 		add(startPanel);
+		add(persistPanel);
 		add(playerMsgPanel);
 		add(statusMsgPanel);
 
@@ -327,16 +336,19 @@ public class ChessBoardPanel extends JPanel {
 				controller.saveGame();
 
 				gameList.removeAllItems();
-				for (Long s : controller.getGameIds()) {
+				for (String s : controller.getGameNames()) {
 					gameList.addItem(s);
+					LOG.info("adding : " + s);
 				}
+
+
 
 			}
 
 			if (event.getSource() == gameList) {
 				JComboBox cb = (JComboBox) event.getSource();
-				selectedGameId = (Long) cb.getSelectedItem();
-				gameList = new JComboBox(controller.getGameIds());
+				selectedGameName = (String) cb.getSelectedItem();
+				gameList = new JComboBox(controller.getGameNames());
 				startPanel.repaint();
 			}
 			
@@ -349,7 +361,7 @@ public class ChessBoardPanel extends JPanel {
 
 			if (event.getSource() == loadGameButton) {
 
-				controller.loadGame(selectedGameId);
+				controller.loadGameFromName(selectedGameName);
 				updateButtons(SelectionStatus.destValidNoCheck, false);
 				updateMessages(SelectionStatus.destValidNoCheck);
 				LOG.info("Just loaded this game : " +controller.game.getId());

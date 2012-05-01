@@ -6,6 +6,7 @@ package seis.stthomas.edu.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import seis.stthomas.edu.domain.Board;
 import seis.stthomas.edu.domain.Rook;
+import seis.stthomas.edu.service.BoardService;
 import seis.stthomas.edu.web.RookController;
 
 privileged aspect RookController_Roo_Controller {
+    
+    @Autowired
+    BoardService RookController.boardService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String RookController.create(@Valid Rook rook, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -87,7 +91,7 @@ privileged aspect RookController_Roo_Controller {
     
     void RookController.populateEditForm(Model uiModel, Rook rook) {
         uiModel.addAttribute("rook", rook);
-        uiModel.addAttribute("boards", Board.findAllBoards());
+        uiModel.addAttribute("boards", boardService.findAllBoards());
     }
     
     String RookController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import seis.stthomas.edu.domain.Board;
 import seis.stthomas.edu.domain.BoardDataOnDemand;
 import seis.stthomas.edu.domain.Game;
-import seis.stthomas.edu.domain.GameDataOnDemand;
+import seis.stthomas.edu.service.BoardService;
 
 privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
     
@@ -26,7 +26,7 @@ privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
     private List<Board> BoardDataOnDemand.data;
     
     @Autowired
-    private GameDataOnDemand BoardDataOnDemand.gameDataOnDemand;
+    BoardService BoardDataOnDemand.boardService;
     
     public Board BoardDataOnDemand.getNewTransientBoard(int index) {
         Board obj = new Board();
@@ -35,7 +35,7 @@ privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
     }
     
     public void BoardDataOnDemand.setGame(Board obj, int index) {
-        Game game = gameDataOnDemand.getSpecificGame(index);
+        Game game = null;
         obj.setGame(game);
     }
     
@@ -49,14 +49,14 @@ privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
         }
         Board obj = data.get(index);
         Long id = obj.getId();
-        return Board.findBoard(id);
+        return boardService.findBoard(id);
     }
     
     public Board BoardDataOnDemand.getRandomBoard() {
         init();
         Board obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Board.findBoard(id);
+        return boardService.findBoard(id);
     }
     
     public boolean BoardDataOnDemand.modifyBoard(Board obj) {
@@ -66,7 +66,7 @@ privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
     public void BoardDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Board.findBoardEntries(from, to);
+        data = boardService.findBoardEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Board' illegally returned null");
         }
@@ -78,7 +78,7 @@ privileged aspect BoardDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Board obj = getNewTransientBoard(i);
             try {
-                obj.persist();
+                boardService.saveBoard(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

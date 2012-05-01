@@ -3,7 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_seis_stthomas_edu_domain_Board" modelAttribute="board" path="/boards" render="${empty dependencies}" z="XleCUY85A7Qg3EpLwOan+z7V4fc=">
-        <field:select field="game" id="c_seis_stthomas_edu_domain_Board_game" itemValue="id" items="${games}" path="/games" z="LhPKl2cJWFd3KXCXUacUZpqh908="/>
+        <field:input field="game" id="c_seis_stthomas_edu_domain_Board_game" z="B0vg8tHj6KcUwHA2sYQtwBwb8Ao="/>
+        <field:input field="pieces" id="c_seis_stthomas_edu_domain_Board_pieces" z="X0xn2Wsvzmi581G7org2WkyrJYs="/>
+        <field:input field="squareInRange" id="c_seis_stthomas_edu_domain_Board_squareInRange" z="EAxs+n9cgqVcEzhY48HpTP4ZgUA="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_seis_stthomas_edu_domain_Board" render="${not empty dependencies}" z="Eq6ocEjl2c2e2GgMD5IaoXyD+KM="/>
 </div>

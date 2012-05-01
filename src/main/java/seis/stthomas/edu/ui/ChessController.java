@@ -6,21 +6,16 @@
 
 package seis.stthomas.edu.ui;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ComboBoxModel;
-
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import seis.stthomas.edu.ai.CPUPlayer;
 import seis.stthomas.edu.domain.Game;
 import seis.stthomas.edu.service.GameServiceImpl;
 
@@ -43,6 +38,7 @@ public class ChessController {
 	public void newTwoPlayerGame() {
 		LOG.info("starting a new game");
 		this.game = new Game();
+		this.game.initGame();
 //		 game.newGame(playVsCPU, difficulty);
 		// game.newGame();
 
@@ -51,6 +47,8 @@ public class ChessController {
 	public void newOnePlayerGameGame(boolean playVsCPU, int difficulty) {
 		LOG.info("starting a new game");
 		this.game = new Game(playVsCPU, difficulty);
+		this.game.initGame();
+
 		// game.newGame();
 
 	}
@@ -96,7 +94,7 @@ public class ChessController {
 
 	}
 
-	public void loadGame(Long selectedGameId) {
+	public void loadGameFromId(Long selectedGameId) {
 		LOG.info("selectedGameId : " + selectedGameId);
 		this.game = gameService.findGame(selectedGameId);
 		LOG.info("piece map size : " + this.game.getBoard().getPieces().size());
@@ -104,11 +102,40 @@ public class ChessController {
 
 		LOG.info("board id is : " +this.game.getBoard().getId());
 		LOG.info(this.game.toJson());
+		if (this.game.isIsOpponentCPU()){
+			this.game.setCpuPlayer(new CPUPlayer());
+			//TODO need to fix the difficulty.
+			this.game.getCpuPlayer().setDifficulty(1);
+		}
+		
+	}
+	
+	public void loadGameFromName(String selectedGameName) {
+		LOG.debug("selectedGameName : " + selectedGameName);
+		List<Game> games = gameService.findAllGames();
+		Iterator<Game> iterator = games.iterator();
+		while(iterator.hasNext()){
+			Game tempGame = (Game) iterator.next();
+			if (tempGame.getName().equalsIgnoreCase(selectedGameName)){
+				this.game = tempGame;
+			}
+			
+		}
+		
+		
+
+		LOG.debug("board id is : " +this.game.getBoard().getId());
+		LOG.debug(this.game.toJson());
+		if (this.game.isIsOpponentCPU()){
+			this.game.setCpuPlayer(new CPUPlayer());
+			//TODO need to fix the difficulty.
+			this.game.getCpuPlayer().setDifficulty(1);
+		}
 		
 	}
 
 	public Long[] getGameIds() {
-		List<Long> gameNames = new ArrayList<Long>();
+		List<Long> gameIds = new ArrayList<Long>();
 		List<Game> listOfAllGames = gameService.findAllGames();
 		LOG.info("Found this many games : " +listOfAllGames.size());
 		Iterator<Game> iterator = listOfAllGames.iterator();
@@ -118,12 +145,32 @@ public class ChessController {
 
 				Long gameFromListName = gameFromList.getId();
 
-			gameNames.add(gameFromListName);
+				gameIds.add(gameFromListName);
 			LOG.info("added this id to the games list :: " + gameFromListName);
 
 		}
 		Long [] emptyStringArray = new Long[0];
-		Long[] gameNamesArray = (Long[]) gameNames.toArray(emptyStringArray);
+		Long[] gameIdsArray = (Long[]) gameIds.toArray(emptyStringArray);
+		return gameIdsArray;
+	}
+	
+	public String[] getGameNames() {
+		List<String> gameNames = new ArrayList<String>();
+		List<Game> listOfAllGames = gameService.findAllGames();
+		LOG.info("Found this many games : " +listOfAllGames.size());
+		Iterator<Game> iterator = listOfAllGames.iterator();
+		while (iterator.hasNext()) {
+			Game gameFromList = iterator.next();
+			LOG.info("Found this game : " +gameFromList.getId());
+
+				String gameFromListName = gameFromList.getName();
+
+			gameNames.add(gameFromListName);
+			LOG.info("added this id to the games list :: " + gameFromListName);
+
+		}
+		String[] emptyStringArray = new String[0];
+		String[] gameNamesArray = (String[])gameNames.toArray(emptyStringArray);
 		return gameNamesArray;
 	}
 

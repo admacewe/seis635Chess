@@ -20,7 +20,7 @@ privileged aspect BoardController_Roo_Controller_Json {
     @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> BoardController.showJson(@PathVariable("id") Long id) {
-        Board board = Board.findBoard(id);
+        Board board = boardService.findBoard(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         if (board == null) {
@@ -34,14 +34,14 @@ privileged aspect BoardController_Roo_Controller_Json {
     public ResponseEntity<String> BoardController.listJson() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        List<Board> result = Board.findAllBoards();
+        List<Board> result = boardService.findAllBoards();
         return new ResponseEntity<String>(Board.toJsonArray(result), headers, HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> BoardController.createFromJson(@RequestBody String json) {
         Board board = Board.fromJsonToBoard(json);
-        board.persist();
+        boardService.saveBoard(board);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -50,7 +50,7 @@ privileged aspect BoardController_Roo_Controller_Json {
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> BoardController.createFromJsonArray(@RequestBody String json) {
         for (Board board: Board.fromJsonArrayToBoards(json)) {
-            board.persist();
+            boardService.saveBoard(board);
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -62,7 +62,7 @@ privileged aspect BoardController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         Board board = Board.fromJsonToBoard(json);
-        if (board.merge() == null) {
+        if (boardService.updateBoard(board) == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
@@ -73,7 +73,7 @@ privileged aspect BoardController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         for (Board board: Board.fromJsonArrayToBoards(json)) {
-            if (board.merge() == null) {
+            if (boardService.updateBoard(board) == null) {
                 return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
             }
         }
@@ -82,13 +82,13 @@ privileged aspect BoardController_Roo_Controller_Json {
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public ResponseEntity<String> BoardController.deleteFromJson(@PathVariable("id") Long id) {
-        Board board = Board.findBoard(id);
+        Board board = boardService.findBoard(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         if (board == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        board.remove();
+        boardService.deleteBoard(board);
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     

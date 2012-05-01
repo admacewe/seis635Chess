@@ -1,2 +1,9 @@
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-28 12:14:05
 jpa setup --database HYPERSONIC_IN_MEMORY --provider HIBERNATE 
+jpa setup --database MSSQL --provider HIBERNATE 
+service --interface ~.service.BoardService --entity ~.domain.Board
+service --interface ~.service.PieceService --entity ~.domain.Piece
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-30 07:29:10
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-30 21:20:13
+web mvc all --package seis.stthomas.edu.web 
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-30 21:53:00

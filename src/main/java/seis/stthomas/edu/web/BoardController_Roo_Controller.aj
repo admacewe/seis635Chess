@@ -16,15 +16,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import seis.stthomas.edu.domain.Board;
-import seis.stthomas.edu.domain.Piece;
 import seis.stthomas.edu.domain.Square;
+import seis.stthomas.edu.service.BoardService;
 import seis.stthomas.edu.service.GameService;
+import seis.stthomas.edu.service.PieceService;
 import seis.stthomas.edu.web.BoardController;
 
 privileged aspect BoardController_Roo_Controller {
     
     @Autowired
+    BoardService BoardController.boardService;
+    
+    @Autowired
     GameService BoardController.gameService;
+    
+    @Autowired
+    PieceService BoardController.pieceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String BoardController.create(@Valid Board board, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -33,7 +40,7 @@ privileged aspect BoardController_Roo_Controller {
             return "boards/create";
         }
         uiModel.asMap().clear();
-        board.persist();
+        boardService.saveBoard(board);
         return "redirect:/boards/" + encodeUrlPathSegment(board.getId().toString(), httpServletRequest);
     }
     
@@ -45,7 +52,7 @@ privileged aspect BoardController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String BoardController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("board", Board.findBoard(id));
+        uiModel.addAttribute("board", boardService.findBoard(id));
         uiModel.addAttribute("itemId", id);
         return "boards/show";
     }
@@ -55,11 +62,11 @@ privileged aspect BoardController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("boards", Board.findBoardEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Board.countBoards() / sizeNo;
+            uiModel.addAttribute("boards", boardService.findBoardEntries(firstResult, sizeNo));
+            float nrOfPages = (float) boardService.countAllBoards() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("boards", Board.findAllBoards());
+            uiModel.addAttribute("boards", boardService.findAllBoards());
         }
         return "boards/list";
     }
@@ -71,20 +78,20 @@ privileged aspect BoardController_Roo_Controller {
             return "boards/update";
         }
         uiModel.asMap().clear();
-        board.merge();
+        boardService.updateBoard(board);
         return "redirect:/boards/" + encodeUrlPathSegment(board.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String BoardController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Board.findBoard(id));
+        populateEditForm(uiModel, boardService.findBoard(id));
         return "boards/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String BoardController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Board board = Board.findBoard(id);
-        board.remove();
+        Board board = boardService.findBoard(id);
+        boardService.deleteBoard(board);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -94,7 +101,7 @@ privileged aspect BoardController_Roo_Controller {
     void BoardController.populateEditForm(Model uiModel, Board board) {
         uiModel.addAttribute("board", board);
         uiModel.addAttribute("games", gameService.findAllGames());
-        uiModel.addAttribute("pieces", Piece.findAllPieces());
+        uiModel.addAttribute("pieces", pieceService.findAllPieces());
         uiModel.addAttribute("squares", Square.findAllSquares());
     }
     

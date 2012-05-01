@@ -6,6 +6,7 @@ package seis.stthomas.edu.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import seis.stthomas.edu.domain.Board;
 import seis.stthomas.edu.domain.Queen;
+import seis.stthomas.edu.service.BoardService;
 import seis.stthomas.edu.web.QueenController;
 
 privileged aspect QueenController_Roo_Controller {
+    
+    @Autowired
+    BoardService QueenController.boardService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QueenController.create(@Valid Queen queen, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -87,7 +91,7 @@ privileged aspect QueenController_Roo_Controller {
     
     void QueenController.populateEditForm(Model uiModel, Queen queen) {
         uiModel.addAttribute("queen", queen);
-        uiModel.addAttribute("boards", Board.findAllBoards());
+        uiModel.addAttribute("boards", boardService.findAllBoards());
     }
     
     String QueenController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -5,6 +5,8 @@
     <page:list id="pl_seis_stthomas_edu_domain_Board" items="${boards}" z="7vZXgT2IBl2TNzW5JbyZ01fakr8=">
         <table:table data="${boards}" id="l_seis_stthomas_edu_domain_Board" path="/boards" z="EjaFfv5hnIAqd/96gRNpSft9PzQ=">
             <table:column id="c_seis_stthomas_edu_domain_Board_game" property="game" z="59Fv006Z/9rMMRNNvcDzlBNXCwg="/>
+            <table:column id="c_seis_stthomas_edu_domain_Board_pieces" property="pieces" z="vdV283iq+bTwcqYsHTge5UaMdT4="/>
+            <table:column id="c_seis_stthomas_edu_domain_Board_squareInRange" property="squareInRange" z="bc/sh5SJ8YfIwIB6u91p78PsTVo="/>
         </table:table>
     </page:list>
 </div>

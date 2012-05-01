@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import seis.stthomas.edu.domain.Board;
 import seis.stthomas.edu.domain.Game;
 import seis.stthomas.edu.domain.GameState;
+import seis.stthomas.edu.service.BoardService;
 import seis.stthomas.edu.service.GameService;
 import seis.stthomas.edu.web.GameController;
 
@@ -26,6 +26,9 @@ privileged aspect GameController_Roo_Controller {
     
     @Autowired
     GameService GameController.gameService;
+    
+    @Autowired
+    BoardService GameController.boardService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String GameController.create(@Valid Game game, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -94,7 +97,7 @@ privileged aspect GameController_Roo_Controller {
     
     void GameController.populateEditForm(Model uiModel, Game game) {
         uiModel.addAttribute("game", game);
-        uiModel.addAttribute("boards", Board.findAllBoards());
+        uiModel.addAttribute("boards", boardService.findAllBoards());
         uiModel.addAttribute("gamestates", Arrays.asList(GameState.values()));
     }
     

@@ -9,18 +9,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.IndexColumn;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
+
 import seis.stthomas.edu.utility.Utilities;
 
 @RooJavaBean
@@ -28,27 +27,33 @@ import seis.stthomas.edu.utility.Utilities;
 @RooJpaActiveRecord
 @RooSerializable
 @RooJson
+@Transactional 
 public class Board implements Serializable {
 
     private static final long serialVersionUID = -4695614365620956689L;
 
-    @OneToOne
+    @OneToOne(mappedBy="board")
     private Game game;
 
-  
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+//    @OneToMany(mappedBy = "board", 
+//    		cascade = CascadeType.ALL, 
+//    		fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="board")
     private Map<Integer, Piece> pieces = new HashMap<Integer, Piece>(64);
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="board")
     private Map<Integer, Square> squareInRange = new HashMap<Integer, Square>(64);
 
     private static final Logger LOG = Logger.getLogger(Board.class.getName());
 
     private static final Class[] parameterTypes = { Integer.TYPE, Integer.TYPE, Piece.class, List.class };
 
-    public Board() {
-        initPieces();
-        initSquaresInRange();
+    public void initBoard(){
+    	LOG.info("entering initBoard");
+      initPieces();
+      initSquaresInRange();
     }
 
     public boolean tryMove(int curRow, int curCol, int destRow, int destCol, boolean updateState, boolean updateHasMoved) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -306,6 +311,19 @@ public class Board implements Serializable {
         pieces.put(7 * 8 + 6, new Knight(true));
         pieces.put(7 * 8 + 7, new Rook(true));
         LOG.info("Finished with initPieces");
+        initSetBoard();
+    }
+    
+    private void initSetBoard(){
+    	for (int i=0;i<16;i++){
+    		LOG.info("Setting : " + i);
+            pieces.get(i).setBoard(this);
+    	}
+    	
+    	for(int i = 48;i<64;i++){
+    		pieces.get(i).setBoard(this);
+    	}
+
     }
 
     private void initSquaresInRange() {

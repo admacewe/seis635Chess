@@ -4,5 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_seis_stthomas_edu_domain_Board" object="${board}" path="/boards" z="8hg26fPbbMA2B2KQRy3zz+hheWQ=">
         <field:display field="game" id="s_seis_stthomas_edu_domain_Board_game" object="${board}" z="GxMRI1Kl9gI+jzKogqiKfCWs1Iw="/>
+        <field:display field="pieces" id="s_seis_stthomas_edu_domain_Board_pieces" object="${board}" z="h0pYHnPcDmuJFkIDuBzBacCn4vA="/>
+        <field:display field="squareInRange" id="s_seis_stthomas_edu_domain_Board_squareInRange" object="${board}" z="GmeOnHKiIMRcnHL9d8WFe7417tg="/>
     </page:show>
 </div>

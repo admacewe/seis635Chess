@@ -24,6 +24,10 @@ privileged aspect Game_Roo_Jpa_Entity {
     @Column(name = "version")
     private Integer Game.version;
     
+    public Game.new() {
+        super();
+    }
+
     public Long Game.getId() {
         return this.id;
     }

@@ -17,12 +17,16 @@ import seis.stthomas.edu.domain.Pawn;
 import seis.stthomas.edu.domain.Queen;
 import seis.stthomas.edu.domain.Rook;
 import seis.stthomas.edu.domain.Square;
+import seis.stthomas.edu.service.BoardService;
 import seis.stthomas.edu.service.GameService;
 import seis.stthomas.edu.web.ApplicationConversionServiceFactoryBean;
 
 privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService {
     
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
+    
+    @Autowired
+    BoardService ApplicationConversionServiceFactoryBean.boardService;
     
     @Autowired
     GameService ApplicationConversionServiceFactoryBean.gameService;
@@ -86,7 +90,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Board> ApplicationConversionServiceFactoryBean.getIdToBoardConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, seis.stthomas.edu.domain.Board>() {
             public seis.stthomas.edu.domain.Board convert(java.lang.Long id) {
-                return Board.findBoard(id);
+                return boardService.findBoard(id);
             }
         };
     }

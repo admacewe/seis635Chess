@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
+import javax.persistence.*;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -13,6 +14,7 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
 import seis.stthomas.edu.ai.CPUPlayer;
 import seis.stthomas.edu.ai.PieceMove;
@@ -21,16 +23,16 @@ import seis.stthomas.edu.ai.PieceMove;
 @RooToString
 @RooJpaActiveRecord
 @RooJson
+@Transactional 
 public class Game implements Serializable {
 
     private static final long serialVersionUID = -2907694147398436613L;
 
     @OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    private Board board = new Board();
+    private Board board;
 
-    public GameState state = GameState.choosePiece;
+    public GameState state;
 
-    @Value("true")
     private boolean activePlayerIsWhite;
     
 	boolean isOpponentCPU; // indicates if opponent is a CPU player or not
@@ -47,15 +49,16 @@ public class Game implements Serializable {
     String name;
 
     private static final Logger LOG = Logger.getLogger(Game.class.getName());
-
-    public Game() {
-        this.setActivePlayerIsWhite(true);
-        LOG.info("this.isActivePlayerIsWhite() :: " + this.isActivePlayerIsWhite());
-        LOG.info("Leaving the game constructor!");
+    
+    public void initGame(){
+    	this.board = new Board();
+    	this.board.initBoard();
+    	this.activePlayerIsWhite = true;
+    	this.state = GameState.choosePiece;
+    	
     }
 
     public Game(boolean playVsCPU, int difficulty) {
-        this.setActivePlayerIsWhite(true);
         this.cpuPlayer = new CPUPlayer();
         this.cpuPlayer.setDifficulty(difficulty);
         this.setIsOpponentCPU(true);
